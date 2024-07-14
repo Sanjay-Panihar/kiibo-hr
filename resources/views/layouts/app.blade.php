@@ -7,7 +7,7 @@
     <title>@yield('title', 'Welcome') - Kiibo</title>
     <link rel="shortcut icon" type="image/png" href="../assets/images/logos/favicon.png" />
     <link rel="stylesheet" href="../assets/css/styles.min.css" />
-    <link rel="stylesheet" href="https://code.jquery.com/ui/1.13.3/themes/base/jquery-ui.css">
+    <link rel="stylesheet" href="../assets/css/select2.min.css" />
     <link rel="stylesheet" href="../assets/css/custom.css">
 
     <!-- CSRF Token -->
@@ -83,6 +83,8 @@
     <script src="../assets/libs/simplebar/dist/simplebar.js"></script>
     <script src="../assets/js/dashboard.js"></script>
     <script src="../assets/js/jquery-ui.js"></script>
+    <script src="../assets/js/select2.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
 
     @yield('scripts')
 </body>
