@@ -7,13 +7,16 @@
     <title>@yield('title', 'Welcome') - Kiibo</title>
     <link rel="shortcut icon" type="image/png" href="../assets/images/logos/favicon.png" />
     <link rel="stylesheet" href="../assets/css/styles.min.css" />
-     <!-- CSRF Token -->
-     <meta name="csrf-token" content="{{ csrf_token() }}">
+    <link rel="stylesheet" href="../assets/css/select2.min.css" />
+    <link rel="stylesheet" href="../assets/css/custom.css">
+
+    <!-- CSRF Token -->
+    <meta name="csrf-token" content="{{ csrf_token() }}">
 </head>
 
 <body>
-<div>
-<!-- <nav class="navbar navbar-expand-md navbar-light bg-white shadow-sm">
+    <div>
+        <!-- <nav class="navbar navbar-expand-md navbar-light bg-white shadow-sm">
             <div class="container">
                 <a class="navbar-brand" href="{{ url('/') }}">
                     {{ config('app.name', 'Laravel') }}
@@ -23,15 +26,15 @@
                 </button>
 
                 <div class="collapse navbar-collapse" id="navbarSupportedContent"> -->
-                    <!-- Left Side Of Navbar -->
-                    <!-- <ul class="navbar-nav me-auto"> -->
+        <!-- Left Side Of Navbar -->
+        <!-- <ul class="navbar-nav me-auto"> -->
 
-                    </ul>
+        </ul>
 
-                    <!-- Right Side Of Navbar -->
-                    <!-- <ul class="navbar-nav ms-auto"> -->
-                        <!-- Authentication Links -->
-                        <!-- @guest
+        <!-- Right Side Of Navbar -->
+        <!-- <ul class="navbar-nav ms-auto"> -->
+        <!-- Authentication Links -->
+        <!-- @guest
                             @if (Route::has('login'))
                                 <li class="nav-item">
                                     <a class="nav-link" href="{{ route('login') }}">{{ __('Login') }}</a>
@@ -66,12 +69,23 @@
                 </div>
             </div>
         </nav> -->
-</div>
+    </div>
     @yield('content')
 
 
     <script src="../assets/libs/jquery/dist/jquery.min.js"></script>
     <script src="../assets/libs/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="../assets/libs/jquery/dist/jquery.min.js"></script>
+    <script src="../assets/libs/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="../assets/js/sidebarmenu.js"></script>
+    <script src="../assets/js/app.min.js"></script>
+    <script src="../assets/libs/apexcharts/dist/apexcharts.min.js"></script>
+    <script src="../assets/libs/simplebar/dist/simplebar.js"></script>
+    <script src="../assets/js/dashboard.js"></script>
+    <script src="../assets/js/jquery-ui.js"></script>
+    <script src="../assets/js/select2.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
+
     @yield('scripts')
 </body>
 

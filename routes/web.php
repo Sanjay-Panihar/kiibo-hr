@@ -3,6 +3,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Support\Facades\Route;
 use Auth;
+
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -22,3 +23,9 @@ Auth::routes();
 
 Route::get('/home', [HomeController::class, 'index'])->name('home');
 
+
+Route::group(['middleware' => 'auth'], function () {
+    Route::group(['prefix' => 'admin', 'as' => 'admin.'], function () {
+        Route::get('/profile', [UserDetailsController::class, 'index'])->name('profile');
+    });
+});
