@@ -30,7 +30,7 @@
           <span class="hide-menu">COMPONENTS</span>
         </li>
         <li class="sidebar-item">
-          <a class="sidebar-link" href="./ui-buttons.html" aria-expanded="false">
+          <a class="sidebar-link" href="{{ route('admin.event')}}" aria-expanded="false">
             <span>
               <i class="ti ti-article"></i>
             </span>
@@ -38,13 +38,30 @@
           </a>
         </li>
         <li class="sidebar-item">
-          <a class="sidebar-link" href="./ui-alerts.html" aria-expanded="false">
-            <span>
-              <i class="ti ti-alert-circle"></i>
-            </span>
-            <span class="hide-menu">Gurukul</span>
-          </a>
+    <a class="sidebar-link" href="javascript:void(0)" aria-expanded="false">
+        <span>
+            <i class="ti ti-school"></i>
+        </span>
+        <span class="hide-menu">Gurukul</span>
+        <span class="chevron">
+            <i class="ti ti-chevron-down"></i>
+        </span>
+    </a>
+    <ul class="sidebar-submenu" style="display: none;">
+        <li class="sidebar-subitem">
+            <a class="sidebar-sublink" href="#submenu1">
+                <i class="ti ti-book"></i>
+                <span>Courses</span>
+            </a>
         </li>
+        <li class="sidebar-subitem">
+            <a class="sidebar-sublink" href="#submenu2">
+                <i class="ti ti-certificate"></i>
+                <span>Certificates</span>
+            </a>
+        </li>
+    </ul>
+</li>
         <li class="sidebar-item">
           <a class="sidebar-link" href="./ui-card.html" aria-expanded="false">
             <span>

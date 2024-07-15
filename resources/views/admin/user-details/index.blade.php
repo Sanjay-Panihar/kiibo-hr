@@ -10,7 +10,7 @@
         @include('admin.partials.header')
         <div class="container-fluid">
             <div>
-                <div class="row mb-4">
+                <div class="row">
                     <div class="col-md-6">
                         <h3>My Profile</h3>
                     </div>
@@ -84,25 +84,42 @@
                         <div class="row mb-3">
                             <div class="col-md-6">
                                 <label class="form-label">Let us know more about you</label>
-                                <textarea class="form-control" rows="5"></textarea>
+                                <textarea class="form-control" rows="3"></textarea>
                             </div>
                             <div class="col-md-6">
                                 <label class="form-label">Achievements</label>
-                                <textarea class="form-control" rows="5"></textarea>
+                                <textarea class="form-control" rows="3"></textarea>
                             </div>
                         </div>
                         <div class="row mb-3">
                             <div class="col-md-12">
-                                <label class="form-label">Education Details</label>
-                                <textarea class="form-control" rows="5"></textarea>
+                                <div class="d-flex justify-content-between align-items-center mb-2">
+                                    <label class="form-label mb-0">Education Details</label>
+                                    <button class="btn btn-primary" id="addEducationBtn"><i class="ti ti-plus"></i> Add New</button>
+                                </div>
+                                <div class="education-details-container">Add Your Educational Details</div>
                             </div>
                         </div>
-                        <div class="text-end">
-                            <button class="btn btn-primary">Add New</button>
+                        <div class="row mb-3">
+                            <div class="col-md-12">
+                                <div class="d-flex justify-content-between align-items-center mb-2">
+                                    <label class="form-label mb-0">Certifications</label>
+                                    <button class="btn btn-primary" id="addEducationBtn"><i class="ti ti-plus"></i> Add New</button>
+                                </div>
+                                <div class="education-details-container">Add Your Certification Details</div>
+                            </div>
                         </div>
                     </div>
                     <div class="content">
-                        <p>Morbi tincidunt, dui sit amet facilisis feugiat, odio metus gravida ante, ut pharetra massa metus id nunc. Duis scelerisque molestie turpis.</p>
+                    <div class="row mb-3">
+                            <div class="col-md-12">
+                                <div class="d-flex justify-content-between align-items-center mb-2">
+                                    <label class="form-label mb-0">Experience</label>
+                                    <button class="btn btn-primary" id="addEducationBtn"><i class="ti ti-plus"></i> Add New</button>
+                                </div>
+                                <div class="education-details-container">Add Your Experience Details</div>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -129,7 +146,7 @@
     });
 </script>
 <script>
-    $(document).ready(function() {
+    $(document).ready(function () {
         $("#skills, #hobbies").select2({
             placeholder: "Select",
             allowClear: true,
