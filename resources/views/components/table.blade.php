@@ -14,7 +14,7 @@
     </table>
 </div>
 
-@section('scripts')
+@push('scripts')
 <script>
     $(document).ready(function() {
         $('#{{ $id }}').DataTable({
@@ -23,7 +23,7 @@
             ajax: '{{ $ajaxUrl }}',
             columns: [
                 @foreach ($columns as $column)
-                { data: '{{ $column }}', name: '{{ $column }}' },
+                    { data: '{{ $column }}', name: '{{ $column }}' },
                 @endforeach
                 { 
                     data: 'actions', 
@@ -45,4 +45,4 @@
             }
         });
 </script>
-@endsection
+@endpush

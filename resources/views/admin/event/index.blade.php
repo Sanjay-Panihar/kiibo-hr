@@ -42,7 +42,7 @@
 </div>
 @endsection
 
-@section('scripts')
+@push('scripts')
 <script>
     document.addEventListener('DOMContentLoaded', function () {
         const tabs = document.querySelectorAll('.tab-btn');
@@ -66,4 +66,4 @@
         });
     });
 </script>
-@endsection
+@endpush
