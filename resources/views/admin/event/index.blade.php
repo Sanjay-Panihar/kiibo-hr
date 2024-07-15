@@ -27,21 +27,7 @@
                 </div>
                 <div class="content-box">
                     <div class="content active">
-                        <table class="table">
-                            <tr>
-                                <th>Event Name</th>
-                                <th>Start Date</th>
-                                <th>End Date</th>
-                                <th>Time</th>
-                                <th>Created By</th>
-                                <th>Announcements</th>
-                                <th>Total Likes</th>
-                                <th>Total Views</th>
-                                <th>Status</th>
-                                <th>Action</th>
-                            </tr>
-
-                        </table>
+                    <x-table id="event-table" :columns="['id', 'name', 'start_date', 'end_date','time', 'announcements', 'total_likes', 'total_views','status', 'created_by']" ajaxUrl="{{ route('admin.event') }}" />
                     </div>
                     <div class="content">
                     <div class="row mb-3">

@@ -23,7 +23,7 @@ return new class extends Migration
             $table->unsignedInteger('status')->default(1)->comment('0=Inactive, 1=Active');
             $table->unsignedInteger('created_by');
             $table->foreign('created_by')->references('id')->on('users')->onDelete('cascade');
-            $table->unsignedInteger('updated_by');
+            $table->unsignedInteger('updated_by')->nullable();
             $table->foreign('updated_by')->references('id')->on('users')->onDelete('cascade');
             $table->timestamps();
             $table->softDeletes();
