@@ -18,6 +18,9 @@ class EventController extends Controller
                 ->addColumn('status', function($row){
                     return $row->status ? '<span class="badge badge-primary">Active</span>' : '<span class="badge badge-danger">Inactive</span>';
                 })
+                ->addColumn('created_by', function ($row) {
+                    return $row->user ? $row->user->name : 'N/A';
+                })
                 ->addColumn('actions', function($row){
                     $btn = '<a href="'.route('admin.event.edit', $row->id).'" class="edit btn btn-primary btn-sm"><i class="ti ti-edit"></i></a>';
                     $btn .= '<form action="'.route('admin.event.delete', $row->id).'" method="POST" style="display:inline-block;">
