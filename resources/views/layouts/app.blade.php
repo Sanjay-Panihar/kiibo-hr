@@ -8,11 +8,14 @@
     <link rel="shortcut icon" type="image/png" href="../assets/images/logos/favicon.png" />
     <link rel="stylesheet" href="../assets/css/styles.min.css" />
     <link rel="stylesheet" href="../assets/css/select2.min.css" />
-    <link rel="stylesheet" href="../assets/css/dataTables.min.css" />
+    <!-- <link rel="stylesheet" href="../assets/css/dataTables.min.css" /> -->
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.11.3/css/jquery.dataTables.min.css">
+
     <link rel="stylesheet" href="../assets/css/custom.css">
 
     <!-- CSRF Token -->
     <meta name="csrf-token" content="{{ csrf_token() }}">
+    @stack('css')
 </head>
 
 <body>

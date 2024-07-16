@@ -42,7 +42,7 @@
         <span>
             <i class="ti ti-school"></i>
         </span>
-        <span class="hide-menu">Gurukul</span>
+        <span class="hide-menu">Learnings</span>
         <span class="chevron">
             <i class="ti ti-chevron-down"></i>
         </span>
