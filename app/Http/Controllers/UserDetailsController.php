@@ -12,7 +12,7 @@ class UserDetailsController extends Controller
     }
     public function store(Request $request)
     {
-        dd($request->all());
+        // dd($request->all());
         try {
             $validator = validator($request->all(), [
                 'education_details.*.degree' => 'required|string', // Validate each field in education details
@@ -25,14 +25,14 @@ class UserDetailsController extends Controller
                 'certifications.*.score' => 'nullable|string',
             ]);
             if($validator->fails()){
-                return response()->json($validator)->withInput();
+                return response()->json(['message' => $validator->errors(), 'status' => 'false']);
             } else {
 
-                return response()->json(['message' => 'User details added successfully', 'alert-type' => 'success']);
+                return response()->json(['message' => 'User details added successfully', 'status' => 'true']);
             }
         } catch (\Exception $e) {
 
-            return response()->json(['message' => $e->getMessage(), 'alert-type' => 'error']);
+            return response()->json(['message' => $e->getMessage(), 'status' => 'false']);
         }
     }
 }

@@ -156,16 +156,16 @@
                                     <div id="educationContainer">
                                         <div class="row mb-2">
                                             <div class="col-md-3">
-                                                <input type="text" class="form-control" name="education_details[][degree]" placeholder="Degree" />
+                                                <input type="text" class="form-control" name="education_details[0][degree]" placeholder="Degree" />
                                             </div>
                                             <div class="col-md-3">
-                                                <input type="text" class="form-control" name="education_details[][institute]" placeholder="Institute" />
+                                                <input type="text" class="form-control" name="education_details[0][institute]" placeholder="Institute" />
                                             </div>
                                             <div class="col-md-3">
-                                                <input type="text" class="form-control" name="education_details[][start_year]" placeholder="Start Year" />
+                                                <input type="text" class="form-control" name="education_details[0][start_year]" placeholder="Start Year" />
                                             </div>
                                             <div class="col-md-3">
-                                                <input type="text" class="form-control" name="education_details[][end_year]" placeholder="End Year" />
+                                                <input type="text" class="form-control" name="education_details[0][end_year]" placeholder="End Year" />
                                             </div>
                                         </div>
                                     </div>
@@ -182,17 +182,17 @@
                                     <div id="certificationContainer">
                                         <div class="row mb-2">
                                             <div class="col-md-3">
-                                                <input type="text" class="form-control" name="certifications[]['certification']" placeholder="Certification" />
+                                                <input type="text" class="form-control" name="certifications[0]['certification']" placeholder="Certification" />
                                             </div>
                                             <div class="col-md-3">
-                                                <input type="text" class="form-control" name="certifications[]['institute']" placeholder="Institute" />
+                                                <input type="text" class="form-control" name="certifications[0]['institute']" placeholder="Institute" />
                                             </div>
                                             <div class="col-md-3">
-                                                <input type="text" class="form-control" name="certifications[]['year']" placeholder="Year" />
+                                                <input type="text" class="form-control" name="certifications[0]['year']" placeholder="Year" />
                                             </div>
                                             <div class="col-md-3">
                                                 <div class="d-flex align-items-center">
-                                                    <input type="text" class="form-control" name="certifications[]['score']" placeholder="Score" />
+                                                    <input type="text" class="form-control" name="certifications[0]['score']" placeholder="Score" />
                                                 </div>
                                             </div>
                                         </div>
@@ -262,21 +262,22 @@
         function addEntry(containerId, entryHtml) {
             $(containerId).append(entryHtml);
         }
-
+        let educationIndex = 1;
+        let certificationIndex = 1;
         const educationEntryHtml = `
             <div class="row education-entry">
                 <div class="col-md-3">
-                    <input type="text" class="form-control" name="education_details[][degree]"  placeholder="Degree" />
+                    <input type="text" class="form-control" name="education_details[${educationIndex}][degree]"  placeholder="Degree" />
                 </div>
                 <div class="col-md-3">
-                    <input type="text" class="form-control" name="education_details[][institute]"  placeholder="Institute" />
+                    <input type="text" class="form-control" name="education_details[${educationIndex}][institute]"  placeholder="Institute" />
                 </div>
                 <div class="col-md-3">
-                    <input type="text" class="form-control" name="education_details[][start_year]"  placeholder="Start Year" />
+                    <input type="text" class="form-control" name="education_details[${educationIndex}][start_year]"  placeholder="Start Year" />
                 </div>
                 <div class="col-md-3">
                     <div class="d-flex align-items-center">
-                        <input type="text" class="form-control" name="education_details[][end_year]"  placeholder="End Year" />
+                        <input type="text" class="form-control" name="education_details[${educationIndex}][end_year]"  placeholder="End Year" />
                         <button class="remove-btn ml-2 btn btn-sm"><i class="ti ti-trash"></i></button>
                     </div>
                 </div>
@@ -286,17 +287,17 @@
         const certificationEntryHtml = `
             <div class="row certification-entry mt-2">
                 <div class="col-md-3">
-                    <input type="text" class="form-control" name="certifications[]['certification']" placeholder="Certification" />
+                    <input type="text" class="form-control" name="certifications[${certificationIndex}]['certification']" placeholder="Certification" />
                 </div>
                 <div class="col-md-3">
-                    <input type="text" class="form-control" name="certifications[]['institute']" placeholder="Institute" />
+                    <input type="text" class="form-control" name="certifications[${certificationIndex}]['institute']" placeholder="Institute" />
                 </div>
                 <div class="col-md-3">
-                    <input type="text" class="form-control" name="certifications[]['year']" placeholder="Year" />
+                    <input type="text" class="form-control" name="certifications[${certificationIndex}]['year']" placeholder="Year" />
                 </div>
                 <div class="col-md-3">
                     <div class="d-flex align-items-center">
-                        <input type="text" class="form-control" name="certifications[]['score']" placeholder="Score" />
+                        <input type="text" class="form-control" name="certifications[${certificationIndex}]['score']" placeholder="Score" />
                           <button class="remove-btn ml-2 btn btn-sm"><i class="ti ti-trash"></i></button>
                         </div>
                 </div>
