@@ -27,6 +27,7 @@ Route::get('/home', [HomeController::class, 'index'])->name('home');
 Route::group(['middleware' => 'auth'], function () {
     Route::group(['prefix' => 'admin', 'as' => 'admin.'], function () {
         Route::get('/profile', [UserDetailsController::class, 'index'])->name('profile');
+        Route::post('/user-details/store', [UserDetailsController::class, 'store'])->name('user-details.store');
 
         Route::get('/event', [EventController::class, 'index'])->name('event');
         Route::get('/edit/{id}', [EventController::class, 'edit'])->name('event.edit');
