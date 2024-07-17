@@ -10,6 +10,8 @@
     <link rel="stylesheet" href="../assets/css/select2.min.css" />
     <!-- <link rel="stylesheet" href="../assets/css/dataTables.min.css" /> -->
     <link rel="stylesheet" href="https://cdn.datatables.net/1.11.3/css/jquery.dataTables.min.css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.css" rel="stylesheet">
+
 
     <link rel="stylesheet" href="../assets/css/custom.css">
 
@@ -90,6 +92,7 @@
     <script src="../assets/js/select2.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
     <script src="../assets/js/jquery.dataTables.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/js/toastr.min.js"></script>
     <script src="../assets/js/custom.js"></script>
 
     @yield('scripts')
