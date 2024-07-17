@@ -83,119 +83,124 @@
                                 <p><strong>Emergency Contact:</strong> <span>9876541330</span></p>
                             </div>
                         </div>
-                        <div class="row mb-3">
-                            <div class="col-md-6">
-                                <label class="form-label" for="govt_id">Select Govt Id</label>
-                                <select class="form-control">
-                                    <option value="" selected disabled>Select Govt Id</option>
-                                    <option value="1">Aadhar Card</option>
-                                    <option value="2">Pan card</option>
-                                    <option value="3">Passport</option>
-                                    <option value="4">Voter ID </option>
-                                    <option value="5">Driving Licence </option>
-                                </select>
+                        <form method="post" id="profileForm">
+                            <div class="row mb-3">
+                                <div class="col-md-6">
+                                    <label class="form-label" for="govt_id" name="govt_id">Select Govt Id</label>
+                                    <select class="form-control">
+                                        <option value="" selected disabled>Select Govt Id</option>
+                                        <option value="1">Aadhar Card</option>
+                                        <option value="2">Pan card</option>
+                                        <option value="3">Passport</option>
+                                        <option value="4">Voter ID </option>
+                                        <option value="5">Driving Licence </option>
+                                    </select>
+                                </div>
+                                <div class="col-md-6">
+                                    <label class="form-label" for="govt_id_no">Govt Id No</label>
+                                    <input type="text" name="govt_id_no" id="govt_id_no" class="form-control"
+                                        placeholder="Enter Govt Id">
+                                </div>
                             </div>
-                            <div class="col-md-6">
-                            <label class="form-label" for="govt_id">Govt Id No</label>
-                                <input type="text" name="Govt Id" id="govt_id" class="form-control"
-                                    placeholder="Enter Govt Id">
+                            <div class="row mb-3">
+                                <div class="col-md-6">
+                                    <label class="form-label">Skills</label>
+                                    <select name="skills" id="skills" class="form-select form-control" multiple>
+                                        <option value="">Select</option>
+                                        <option value="1">One</option>
+                                        <option value="2">Two</option>
+                                        <option value="3">Three</option>
+                                        <option value="4">Four</option>
+                                    </select>
+                                </div>
+                                <div class="col-md-6">
+                                    <label class="form-label">Hobbies</label>
+                                    <select name="hobbies" id="hobbies" class="form-select form-control" multiple>
+                                        <option value="">Select</option>
+                                        <option value="1">One</option>
+                                        <option value="2">Two</option>
+                                        <option value="3">Three</option>
+                                        <option value="4">Four</option>
+                                    </select>
+                                </div>
                             </div>
-                        </div>
-                        <div class="row mb-3">
-                            <div class="col-md-6">
-                                <label class="form-label">Skills</label>
-                                <select name="skills" id="skills" class="form-select form-control" multiple>
-                                    <option value="">Select</option>
-                                    <option value="1">One</option>
-                                    <option value="2">Two</option>
-                                    <option value="3">Three</option>
-                                    <option value="4">Four</option>
-                                </select>
-                            </div>
-                            <div class="col-md-6">
-                                <label class="form-label">Hobbies</label>
-                                <select name="hobbies" id="hobbies" class="form-select form-control" multiple>
-                                    <option value="">Select</option>
-                                    <option value="1">One</option>
-                                    <option value="2">Two</option>
-                                    <option value="3">Three</option>
-                                    <option value="4">Four</option>
-                                </select>
-                            </div>
-                        </div>
 
-                        <div class="row mb-3">
-                            <div class="col-md-6">
-                                <label class="form-label">Let us know more about you</label>
-                                <textarea class="form-control" rows="3"></textarea>
-                            </div>
-                            <div class="col-md-6">
-                                <label class="form-label">Achievements</label>
-                                <textarea class="form-control" rows="3"></textarea>
-                            </div>
-                        </div>
-                        <div class="row mb-3">
-                            <div class="col-md-6">
-                                <label class="form-label">Current Address</label>
-                                <textarea class="form-control" rows="3"></textarea>
-                            </div>
-                            <div class="col-md-6">
-                                <label class="form-label">Permanent Address</label>
-                                <textarea class="form-control" rows="3"></textarea>
-                            </div>
-                        </div>
-                        <div class="row mb-3">
-                            <div class="col-md-12">
-                                <div class="d-flex justify-content-between align-items-center mb-2">
-                                    <label class="form-label mb-0">Education Details</label>
-                                    <button class="btn btn-primary" id="addEducationBtn"><i class="ti ti-plus"></i> Add
-                                        New</button>
+                            <div class="row mb-3">
+                                <div class="col-md-6">
+                                    <label class="form-label">Let us know more about you</label>
+                                    <textarea class="form-control" rows="3" name="about_me" id="about_me"></textarea>
                                 </div>
-                                <div id="educationContainer">
-                                    <div class="row mb-2">
-                                        <div class="col-md-3">
-                                            <input type="text" class="form-control" placeholder="Degree" />
-                                        </div>
-                                        <div class="col-md-3">
-                                            <input type="text" class="form-control" placeholder="Institute" />
-                                        </div>
-                                        <div class="col-md-3">
-                                            <input type="text" class="form-control" placeholder="Start Year" />
-                                        </div>
-                                        <div class="col-md-3">
-                                            <input type="text" class="form-control" placeholder="End Year" />
-                                        </div>
+                                <div class="col-md-6">
+                                    <label class="form-label">Achievements</label>
+                                    <textarea name="achievements" id="achievements" class="form-control" rows="3"></textarea>
+                                </div>
+                            </div>
+                            <div class="row mb-3">
+                                <div class="col-md-6">
+                                    <label class="form-label">Current Address</label>
+                                    <textarea name="current_address" id="current_address" class="form-control" rows="3"></textarea>
+                                </div>
+                                <div class="col-md-6">
+                                    <label class="form-label">Permanent Address</label>
+                                    <textarea name="permanent_address" id="permanent_address" class="form-control" rows="3"></textarea>
+                                </div>
+                            </div>
+                            <div class="row mb-3">
+                                <div class="col-md-12">
+                                    <div class="d-flex justify-content-between align-items-center mb-2">
+                                        <label class="form-label mb-0">Education Details</label>
+                                        <button class="btn btn-primary" id="addEducationBtn" type="button"><i
+                                                class="ti ti-plus"></i> Add
+                                            New</button>
                                     </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="row mb-2">
-                            <div class="col-md-12">
-                                <div class="d-flex justify-content-between align-items-center mb-2">
-                                    <label class="form-label mb-0">Certifications</label>
-                                    <button class="btn btn-primary" id="addCertificationBtn"><i class="ti ti-plus"></i>
-                                        Add New</button>
-                                </div>
-                                <div id="certificationContainer">
-                                    <div class="row mb-2">
-                                        <div class="col-md-3">
-                                            <input type="text" class="form-control" placeholder="Certification" />
-                                        </div>
-                                        <div class="col-md-3">
-                                            <input type="text" class="form-control" placeholder="Institute" />
-                                        </div>
-                                        <div class="col-md-3">
-                                            <input type="text" class="form-control" placeholder="Year" />
-                                        </div>
-                                        <div class="col-md-3">
-                                            <div class="d-flex align-items-center">
-                                                <input type="text" class="form-control" placeholder="Score" />
+                                    <div id="educationContainer">
+                                        <div class="row mb-2">
+                                            <div class="col-md-3">
+                                                <input type="text" class="form-control" name="education_details[][degree]" placeholder="Degree" />
+                                            </div>
+                                            <div class="col-md-3">
+                                                <input type="text" class="form-control" name="education_details[][institute]" placeholder="Institute" />
+                                            </div>
+                                            <div class="col-md-3">
+                                                <input type="text" class="form-control" name="education_details[][start_year]" placeholder="Start Year" />
+                                            </div>
+                                            <div class="col-md-3">
+                                                <input type="text" class="form-control" name="education_details[][end_year]" placeholder="End Year" />
                                             </div>
                                         </div>
                                     </div>
                                 </div>
                             </div>
-                        </div>
+                            <div class="row mb-2">
+                                <div class="col-md-12">
+                                    <div class="d-flex justify-content-between align-items-center mb-2">
+                                        <label class="form-label mb-0">Certifications</label>
+                                        <button class="btn btn-primary" id="addCertificationBtn" type="button"><i
+                                                class="ti ti-plus"></i>
+                                            Add New</button>
+                                    </div>
+                                    <div id="certificationContainer">
+                                        <div class="row mb-2">
+                                            <div class="col-md-3">
+                                                <input type="text" class="form-control" name="certifications[]['certification']" placeholder="Certification" />
+                                            </div>
+                                            <div class="col-md-3">
+                                                <input type="text" class="form-control" name="certifications[]['institute']" placeholder="Institute" />
+                                            </div>
+                                            <div class="col-md-3">
+                                                <input type="text" class="form-control" name="certifications[]['year']" placeholder="Year" />
+                                            </div>
+                                            <div class="col-md-3">
+                                                <div class="d-flex align-items-center">
+                                                    <input type="text" class="form-control" name="certifications[]['score']" placeholder="Score" />
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <button class="btn btn-primary" id="saveProfileBtn" type="button">Save</button>
+                        </form>
                     </div>
                     <div class="content">
                         <div class="row mb-3">
@@ -261,17 +266,17 @@
         const educationEntryHtml = `
             <div class="row education-entry">
                 <div class="col-md-3">
-                    <input type="text" class="form-control" placeholder="Degree" />
+                    <input type="text" class="form-control" name="education_details[][degree]"  placeholder="Degree" />
                 </div>
                 <div class="col-md-3">
-                    <input type="text" class="form-control" placeholder="Institute" />
+                    <input type="text" class="form-control" name="education_details[][institute]"  placeholder="Institute" />
                 </div>
                 <div class="col-md-3">
-                    <input type="text" class="form-control" placeholder="Start Year" />
+                    <input type="text" class="form-control" name="education_details[][start_year]"  placeholder="Start Year" />
                 </div>
                 <div class="col-md-3">
                     <div class="d-flex align-items-center">
-                        <input type="text" class="form-control" placeholder="End Year" />
+                        <input type="text" class="form-control" name="education_details[][end_year]"  placeholder="End Year" />
                         <button class="remove-btn ml-2 btn btn-sm"><i class="ti ti-trash"></i></button>
                     </div>
                 </div>
@@ -281,17 +286,17 @@
         const certificationEntryHtml = `
             <div class="row certification-entry mt-2">
                 <div class="col-md-3">
-                    <input type="text" class="form-control" placeholder="Certification" />
+                    <input type="text" class="form-control" name="certifications[]['certification']" placeholder="Certification" />
                 </div>
                 <div class="col-md-3">
-                    <input type="text" class="form-control" placeholder="Institute" />
+                    <input type="text" class="form-control" name="certifications[]['institute']" placeholder="Institute" />
                 </div>
                 <div class="col-md-3">
-                    <input type="text" class="form-control" placeholder="Year" />
+                    <input type="text" class="form-control" name="certifications[]['year']" placeholder="Year" />
                 </div>
                 <div class="col-md-3">
                     <div class="d-flex align-items-center">
-                        <input type="text" class="form-control" placeholder="Score" />
+                        <input type="text" class="form-control" name="certifications[]['score']" placeholder="Score" />
                           <button class="remove-btn ml-2 btn btn-sm"><i class="ti ti-trash"></i></button>
                         </div>
                 </div>
@@ -333,6 +338,31 @@
         $(document).on('click', '.remove-btn', function () {
             $(this).closest('.education-entry, .certification-entry, .experience-entry').remove();
         });
+
+        $('#saveProfileBtn').on('click', function () {
+            saveProfile();
+        });
+
+        function saveProfile() {
+            const csrfToken = $('meta[name="csrf-token"]').attr('content');
+
+            $.ajax({
+                type: "POST",
+                url: "{{ route('admin.user-details.store') }}",
+                data: $('#profileForm').serialize(),
+                dataType: 'json',
+                headers: {
+                    'X-CSRF-TOKEN': csrfToken  // Include CSRF token in headers
+                },
+                success: function (response) {
+                    console.log(response);
+                },
+                error: function (error) {
+                    console.error('Error saving profile:', error);
+                    // Handle errors, show error message, etc.
+                }
+            });
+        }
     });
 </script>
 @endsection
