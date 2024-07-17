@@ -86,8 +86,8 @@
                         <form method="post" id="profileForm">
                             <div class="row mb-3">
                                 <div class="col-md-6">
-                                    <label class="form-label" for="govt_id" name="govt_id">Select Govt Id</label>
-                                    <select class="form-control">
+                                    <label class="form-label" for="govt_id" >Select Govt Id</label>
+                                    <select class="form-control" name="govt_id">
                                         <option value="" selected disabled>Select Govt Id</option>
                                         <option value="1">Aadhar Card</option>
                                         <option value="2">Pan card</option>
@@ -105,7 +105,7 @@
                             <div class="row mb-3">
                                 <div class="col-md-6">
                                     <label class="form-label">Skills</label>
-                                    <select name="skills" id="skills" class="form-select form-control" multiple>
+                                    <select name="skills[]" id="skills" class="form-select form-control" multiple>
                                         <option value="">Select</option>
                                         <option value="1">One</option>
                                         <option value="2">Two</option>
@@ -115,7 +115,7 @@
                                 </div>
                                 <div class="col-md-6">
                                     <label class="form-label">Hobbies</label>
-                                    <select name="hobbies" id="hobbies" class="form-select form-control" multiple>
+                                    <select name="hobbies[]" id="hobbies" class="form-select form-control" multiple>
                                         <option value="">Select</option>
                                         <option value="1">One</option>
                                         <option value="2">Two</option>
@@ -132,17 +132,20 @@
                                 </div>
                                 <div class="col-md-6">
                                     <label class="form-label">Achievements</label>
-                                    <textarea name="achievements" id="achievements" class="form-control" rows="3"></textarea>
+                                    <textarea name="achievements" id="achievements" class="form-control"
+                                        rows="3"></textarea>
                                 </div>
                             </div>
                             <div class="row mb-3">
                                 <div class="col-md-6">
                                     <label class="form-label">Current Address</label>
-                                    <textarea name="current_address" id="current_address" class="form-control" rows="3"></textarea>
+                                    <textarea name="current_address" id="current_address" class="form-control"
+                                        rows="3"></textarea>
                                 </div>
                                 <div class="col-md-6">
                                     <label class="form-label">Permanent Address</label>
-                                    <textarea name="permanent_address" id="permanent_address" class="form-control" rows="3"></textarea>
+                                    <textarea name="permanent_address" id="permanent_address" class="form-control"
+                                        rows="3"></textarea>
                                 </div>
                             </div>
                             <div class="row mb-3">
@@ -156,16 +159,20 @@
                                     <div id="educationContainer">
                                         <div class="row mb-2">
                                             <div class="col-md-3">
-                                                <input type="text" class="form-control" name="education_details[0][degree]" placeholder="Degree" />
+                                                <input type="text" class="form-control"
+                                                    name="education_details[0][degree]" placeholder="Degree" />
                                             </div>
                                             <div class="col-md-3">
-                                                <input type="text" class="form-control" name="education_details[0][institute]" placeholder="Institute" />
+                                                <input type="text" class="form-control"
+                                                    name="education_details[0][institute]" placeholder="Institute" />
                                             </div>
                                             <div class="col-md-3">
-                                                <input type="text" class="form-control" name="education_details[0][start_year]" placeholder="Start Year" />
+                                                <input type="text" class="form-control"
+                                                    name="education_details[0][start_year]" placeholder="Start Year" />
                                             </div>
                                             <div class="col-md-3">
-                                                <input type="text" class="form-control" name="education_details[0][end_year]" placeholder="End Year" />
+                                                <input type="text" class="form-control"
+                                                    name="education_details[0][end_year]" placeholder="End Year" />
                                             </div>
                                         </div>
                                     </div>
@@ -182,17 +189,22 @@
                                     <div id="certificationContainer">
                                         <div class="row mb-2">
                                             <div class="col-md-3">
-                                                <input type="text" class="form-control" name="certifications[0]['certification']" placeholder="Certification" />
+                                                <input type="text" class="form-control"
+                                                    name="certifications[0][certification]"
+                                                    placeholder="Certification" />
                                             </div>
                                             <div class="col-md-3">
-                                                <input type="text" class="form-control" name="certifications[0]['institute']" placeholder="Institute" />
+                                                <input type="text" class="form-control"
+                                                    name="certifications[0][institute]" placeholder="Institute" />
                                             </div>
                                             <div class="col-md-3">
-                                                <input type="text" class="form-control" name="certifications[0]['year']" placeholder="Year" />
+                                                <input type="text" class="form-control" name="certifications[0][year]"
+                                                    placeholder="Year" />
                                             </div>
                                             <div class="col-md-3">
                                                 <div class="d-flex align-items-center">
-                                                    <input type="text" class="form-control" name="certifications[0]['score']" placeholder="Score" />
+                                                    <input type="text" class="form-control"
+                                                        name="certifications[0][score]" placeholder="Score" />
                                                 </div>
                                             </div>
                                         </div>
@@ -261,10 +273,14 @@
 
         function addEntry(containerId, entryHtml) {
             $(containerId).append(entryHtml);
+
         }
         let educationIndex = 1;
         let certificationIndex = 1;
-        const educationEntryHtml = `
+        let experienceIndex = 1;
+
+        function addEducationRow() {
+            const educationEntryHtml = `
             <div class="row education-entry">
                 <div class="col-md-3">
                     <input type="text" class="form-control" name="education_details[${educationIndex}][degree]"  placeholder="Degree" />
@@ -283,27 +299,34 @@
                 </div>
             </div>
         `;
+            $('#educationContainer').append(educationEntryHtml);
+            educationIndex++;
+        }
 
-        const certificationEntryHtml = `
+        function addCertificationRow() {
+            const certificationEntryHtml = `
             <div class="row certification-entry mt-2">
                 <div class="col-md-3">
-                    <input type="text" class="form-control" name="certifications[${certificationIndex}]['certification']" placeholder="Certification" />
+                    <input type="text" class="form-control" name="certifications[${certificationIndex}][certification]" placeholder="Certification" />
                 </div>
                 <div class="col-md-3">
-                    <input type="text" class="form-control" name="certifications[${certificationIndex}]['institute']" placeholder="Institute" />
+                    <input type="text" class="form-control" name="certifications[${certificationIndex}][institute]" placeholder="Institute" />
                 </div>
                 <div class="col-md-3">
-                    <input type="text" class="form-control" name="certifications[${certificationIndex}]['year']" placeholder="Year" />
+                    <input type="text" class="form-control" name="certifications[${certificationIndex}][year]" placeholder="Year" />
                 </div>
                 <div class="col-md-3">
                     <div class="d-flex align-items-center">
-                        <input type="text" class="form-control" name="certifications[${certificationIndex}]['score']" placeholder="Score" />
+                        <input type="text" class="form-control" name="certifications[${certificationIndex}][score]" placeholder="Score" />
                           <button class="remove-btn ml-2 btn btn-sm"><i class="ti ti-trash"></i></button>
                         </div>
                 </div>
             </div>
         `;
 
+            $('#certificationContainer').append(certificationEntryHtml);
+            certificationIndex++;
+        }
         const experienceEntryHtml = `
             <div class="row experience-entry mt-2">
                 <div class="col-md-3">
@@ -325,11 +348,11 @@
         `;
 
         $('#addEducationBtn').on('click', function () {
-            addEntry('#educationContainer', educationEntryHtml);
+            addEducationRow();
         });
 
         $('#addCertificationBtn').on('click', function () {
-            addEntry('#certificationContainer', certificationEntryHtml);
+            addCertificationRow();
         });
 
         $('#addExperienceBtn').on('click', function () {
@@ -356,11 +379,18 @@
                     'X-CSRF-TOKEN': csrfToken  // Include CSRF token in headers
                 },
                 success: function (response) {
-                    console.log(response);
+                    if(response.status === 'true') {
+                    toastr.success(response.message);
+                } else {
+                    toastr.error(response.message);
+                }
                 },
                 error: function (error) {
                     console.error('Error saving profile:', error);
-                    // Handle errors, show error message, etc.
+                    var errors = xhr.responseJSON.errors;
+                $.each(errors, function(key, value) {
+                    toastr.error(value[0]);
+                });
                 }
             });
         }

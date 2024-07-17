@@ -32,8 +32,6 @@ return new class extends Migration
             $table->string('hobbies', 255)->nullable();
             $table->text('about_me')->nullable();
             $table->text('experience')->nullable();
-            $table->text('education_details')->nullable();
-            $table->text('certifications')->nullable();
             $table->text('achievements')->nullable();
             $table->tinyInteger('status')->default(1)->comment('0=Inactive, 1=Active');
             $table->unsignedInteger('created_by');
