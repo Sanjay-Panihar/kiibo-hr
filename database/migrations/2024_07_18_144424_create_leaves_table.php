@@ -11,16 +11,16 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('events', function (Blueprint $table) {
+        Schema::create('leaves', function (Blueprint $table) {
             $table->increments('id');
-            $table->string('name', 100);
+            $table->integer('leave_type')->comment('1=Sick Leave, 2=Earned Leave, 3=Casual Leave, 4=Optional Leave, 5=Compensatory Leave, 6=Short Leave, 7=Optional Holiday');
+            $table->date('applied_on')->nullable();
             $table->date('start_date');
             $table->date('end_date');
-            $table->string('time', 10);
-            $table->string('announcements', 255);
-            $table->unsignedInteger('total_likes')->default(0);
-            $table->unsignedInteger('total_views')->default(0);
-            $table->tinyInteger('status')->default(1)->comment('0=Inactive, 1=Active');
+            $table->integer('no_of_days');
+            $table->string('reason', 255);
+            $table->string('manager')->nullable();
+            $table->unsignedInteger('status')->default(1)->comment('0=Inactive, 1=Active');
             $table->unsignedInteger('created_by');
             $table->foreign('created_by')->references('id')->on('users')->onDelete('cascade');
             $table->unsignedInteger('updated_by')->nullable();
@@ -35,6 +35,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('events');
+        Schema::dropIfExists('leaves');
     }
 };

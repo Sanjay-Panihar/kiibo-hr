@@ -29,6 +29,13 @@ Route::group(['middleware' => 'auth'], function () {
         Route::get('/profile', [UserDetailsController::class, 'index'])->name('profile');
         Route::post('/user-details/store', [UserDetailsController::class, 'store'])->name('user-details.store');
 
+        Route::get('attendence', [AttendenceController::class, 'index'])->name('attendence');
+
+        Route::get('leave', [LeaveController::class, 'index'])->name('leave');
+        Route::post('/leave/store', [LeaveController::class, 'store'])->name('leave.store');
+        Route::get('/leave/edit/{id}', [LeaveController::class, 'edit'])->name('leave.edit');
+        Route::post('/leave/delete/{id}', [LeaveController::class, 'delete'])->name('leave.delete');
+
         Route::get('/event', [EventController::class, 'index'])->name('event');
         Route::get('/edit/{id}', [EventController::class, 'edit'])->name('event.edit');
         Route::delete('/delete/{id}', [EventController::class, 'delete'])->name('event.delete');

@@ -38,32 +38,32 @@
           </a>
         </li>
         <li class="sidebar-item">
-    <a class="sidebar-link" href="javascript:void(0)" aria-expanded="false">
-        <span>
-            <i class="ti ti-school"></i>
-        </span>
-        <span class="hide-menu">Learnings</span>
-        <span class="chevron">
-            <i class="ti ti-chevron-down"></i>
-        </span>
-    </a>
-    <ul class="sidebar-submenu" style="display: none;">
-        <li class="sidebar-subitem">
-            <a class="sidebar-sublink" href="#submenu1">
+          <a class="sidebar-link" href="javascript:void(0)" aria-expanded="false">
+            <span>
+              <i class="ti ti-school"></i>
+            </span>
+            <span class="hide-menu">Learnings</span>
+            <span class="chevron">
+              <i class="ti ti-chevron-down"></i>
+            </span>
+          </a>
+          <ul class="sidebar-submenu" style="display: none;">
+            <li class="sidebar-subitem">
+              <a class="sidebar-sublink" href="#submenu1">
                 <i class="ti ti-book"></i>
                 <span>Courses</span>
-            </a>
-        </li>
-        <li class="sidebar-subitem">
-            <a class="sidebar-sublink" href="#submenu2">
+              </a>
+            </li>
+            <li class="sidebar-subitem">
+              <a class="sidebar-sublink" href="#submenu2">
                 <i class="ti ti-certificate"></i>
                 <span>Certificates</span>
-            </a>
+              </a>
+            </li>
+          </ul>
         </li>
-    </ul>
-</li>
         <li class="sidebar-item">
-          <a class="sidebar-link" href="./ui-card.html" aria-expanded="false">
+          <a class="sidebar-link" href="{{ route('admin.attendence') }}" aria-expanded="false">
             <span>
               <i class="ti ti-cards"></i>
             </span>
@@ -79,7 +79,7 @@
           </a>
         </li>
         <li class="sidebar-item">
-          <a class="sidebar-link" href="./ui-typography.html" aria-expanded="false">
+          <a class="sidebar-link" href="{{ route('admin.leave') }}" aria-expanded="false">
             <span>
               <i class="ti ti-typography"></i>
             </span>
