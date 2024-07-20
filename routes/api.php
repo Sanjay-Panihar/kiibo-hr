@@ -20,4 +20,4 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
 
-Route::post('leave/store', [LeaveController::class, 'store']);
+Route::post('leave/add', [LeaveController::class, 'store']);

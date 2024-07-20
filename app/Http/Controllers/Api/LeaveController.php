@@ -8,53 +8,80 @@ use illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Log;
 use App\Models\Leave;
+use Error;
+use ErrorException;
+use Illuminate\Database\QueryException;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
+use Illuminate\Support\Facades\DB;
 
 class LeaveController extends Controller
 {
     public function store(Request $request)
     {
-        $this->updateOrCreate($request);
+        return $this->updateOrCreate($request, 'add');
     }
     public function update(Request $request, $id)
     {
-        $this->updateOrCreate($request, $id);
+        return $this->updateOrCreate($request, 'update');
     }
-    public function updateOrCreate(Request $request, $id = null)
+    public function updateOrCreate(Request $request, $action)
     {
-        \Log::info('Request data: ', $request->all());
-
-        try {
-            Log::info('Request data: ', $request->all());
-    
+        if (!in_array($action, array('add', 'update')))
+            throw new NotFoundHttpException();
+        else {
+            $id = $request->id ?? 0;
+            $this->action = $action;
+            $this->browser = $request->header('User-Agent');
+            $this->ip_address = $request->ip();
             $data = $request->all();
-            $validator = Validator::make($data, [
-                'start_date'    => 'required|date|after:yesterday',
-                'end_date'      => 'required|date|after:start_date',
-                'reason'        => 'required|max:255|string',
-                'no_of_days'    => 'required|numeric',
-                'leave_type'    => 'required|numeric',
-            ]);
-    
-            if ($validator->fails()) {
-                Log::error('Validation errors: ', $validator->errors()->toArray());
-                return response()->json(['success' => false, 'errors' => $validator->errors()], 422);
+            try {
+                $validator = Validator::make($data, [
+                    'start_date'    => 'required|date|after:yesterday',
+                    'end_date'      => 'required|date|after:start_date',
+                    'reason'        => 'required|max:255|string',
+                    'no_of_days'    => 'required|numeric',
+                    'leave_type'    => 'required|numeric',
+                ]);
+                if ($validator->fails()) {
+                    $this->status = false;
+                    $this->statusCode = 422;
+                    $this->error['fields'] = $validator->errors();
+                } else {
+                    DB::beginTransaction();
+                    if ($id) {
+                        $data['updated_by'] = Auth::id();
+                    } else {
+                        $data['created_by'] = Auth::id();
+                    }
+                    $output = Leave::updateOrCreate(['id' => $id], $data);
+                    $id = $output->id;
+                    $this->response['description'] = 'Leave ' . rtrim($this->action, 'e') . 'ed successfully.';
+                    $this->response['data'] = ["id" => $id];
+                    DB::commit();
+                    $id = $output->id;
+                }
+            } catch (ErrorException | Error $e) {
+                DB::rollBack();
+                $this->status = false;
+                $this->statusCode = 500;
+                $this->error['code'] = 'PC0003';
+                $this->error['title'] = 'INTERNAL_ERROR';
+                $this->error['description'] = 'Syntax Error.';
+                $this->error['details'] = ['message' => $e->getMessage()];
+            } catch (QueryException $e) {
+                DB::rollBack();
+                $this->status = false;
+                $this->statusCode = 502;
+                $this->error['code'] = 'PC0004';
+                $this->error['title'] = 'DB_ERROR';
+                $this->error['description'] = 'SQL Syntax Error.';
+                $this->error['details'] = ['message' => $e->getMessage()];
             }
-    
-            $data['created_by'] = Auth::user()->id;
-            $data['applied_on'] = date('Y-m-d');
-    
-            $leave = Leave::updateOrCreate(
-                ['id' => $id],
-                $data
-            );
-    
-            $message = $id ? 'Leave updated successfully' : 'Leave applied successfully';
-    
-            return response()->json(['success' => true, 'message' => $message, 'leave' => $leave], 200);
-    
-        } catch (\Exception $e) {
-            Log::error('Exception: ', ['message' => $e->getMessage()]);
-            return response()->json(['success' => false, 'message' => 'Something went wrong', 'error' => $e->getMessage()], 500);
+
+            $response = ["status" => $this->status, "statusCode" => $this->statusCode, "error" => $this->error, "response" => $this->response];
+
+            unset($response["error"]["details"]);
+            return response()->json($response, $this->statusCode);
         }
     }
 }
