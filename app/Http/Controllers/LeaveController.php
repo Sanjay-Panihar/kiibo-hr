@@ -41,41 +41,11 @@ class LeaveController extends Controller
     }
     public function store(Request $request)
     {
-        $request->validate([
-            'start_date' => 'required|date|after:yesterday',
-            'end_date' => 'required|date|after:start_date',
-            'reason' => 'required|max:255|string',
-            'no_of_days' => 'required|numeric',
-            'leave_type' => 'required|numeric',
-        ]);
-        $data = $request->all();
-        $data['created_by'] = Auth::user()->id;
-        $data['applied_on'] = date('Y-m-d');
-        $leave = Leave::create($data);
-        return response()->json([
-            'success' => true,
-            'message' => 'Leave applied successfully',
-            'leave' => $leave
-        ]);
+       return $this->updateOrCreate($request);
     }
     public function update(Request $request, $id)
     {
-        $request->validate([
-            'start_date' => 'required|date|after:yesterday',
-            'end_date' => 'required|date|after:start_date',
-            'reason' => 'required|max:255|string',
-            'no_of_days' => 'required|numeric',
-            'leave_type' => 'required|numeric',
-        ]);
-        $data = $request->all();
-        $data['updated_by'] = Auth::user()->id;
-        $leave = Leave::find($id);
-        $leave->update($data);
-        return response()->json([
-            'success' => true,
-            'message' => 'Leave updated successfully',
-            'leave' => $leave
-        ]);
+        return $this->updateOrCreate($request, $id);
     }
     public function updateOrCreate(Request $request, $id = null)
     {
@@ -105,10 +75,7 @@ class LeaveController extends Controller
 
                 return response()->json(['success' => true, 'message' => $message, 'leave' => $leave], 200);
             }
-
-
         } catch (\Exception $e) {
-            dd($e);
             return response()->json(['success' => false, 'message' => 'Something went wrong', 'error' => $e->getMessage()], 500);
         }
     }
