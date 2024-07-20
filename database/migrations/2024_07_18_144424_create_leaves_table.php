@@ -20,6 +20,8 @@ return new class extends Migration
             $table->integer('no_of_days');
             $table->string('reason', 255);
             $table->string('manager')->nullable();
+            $table->boolean('is_saved')->default(0)->nullable();
+            $table->boolean('is_submitted')->default(0)->nullable();
             $table->unsignedInteger('status')->default(1)->comment('0=Inactive, 1=Active');
             $table->unsignedInteger('created_by');
             $table->foreign('created_by')->references('id')->on('users')->onDelete('cascade');

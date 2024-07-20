@@ -39,3 +39,11 @@ function closeOtherSubmenus(currentItem) {
         }
     });
 }
+
+function showErrors(errors) {
+    for (let field in errors) {
+        if (errors.hasOwnProperty(field)) {
+            document.getElementById(field + '_error').textContent = errors[field][0];
+        }
+    }
+}

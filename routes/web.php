@@ -33,6 +33,7 @@ Route::group(['middleware' => 'auth'], function () {
 
         Route::get('leave', [LeaveController::class, 'index'])->name('leave');
         Route::post('/leave/store', [LeaveController::class, 'store'])->name('leave.store');
+        Route::post('/leave/update', [LeaveController::class, 'update'])->name('leave.update');
         Route::get('/leave/edit/{id}', [LeaveController::class, 'edit'])->name('leave.edit');
         Route::post('/leave/delete/{id}', [LeaveController::class, 'delete'])->name('leave.delete');
 

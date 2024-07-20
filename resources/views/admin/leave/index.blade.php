@@ -14,9 +14,9 @@
                     <div class="col-md-6">
                         <h3>Leave</h3>
                     </div>
-                    <!-- <div class="col-md-6 text-end">
-                        <button class="btn btn-primary"><i class="ti ti-plus"></i> Add Event</button>
-                    </div> -->
+                    <div class="col-md-6 text-end">
+                        <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#staticBackdrop"><i class="ti ti-plus"></i> Apply Leave</button>
+                    </div>
                 </div>
                 <div class="row mt-3">
                     <div class="col-md-3">
@@ -65,6 +65,7 @@
         @include('admin.partials.footer')
     </div>
 </div>
+@include('admin.leave.add_leave_model')
 @endsection
 
 @push('scripts')
