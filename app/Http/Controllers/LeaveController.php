@@ -48,7 +48,7 @@ class LeaveController extends Controller
         return $this->updateOrCreate($request);
     }
     public function updateOrCreate(Request $request)
-    {\Log::info($request->all());
+    {
         try {
             $data = $request->all();
             $id = $data['id'] ?? 0;

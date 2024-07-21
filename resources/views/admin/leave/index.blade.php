@@ -15,8 +15,7 @@
                         <h3>Leave</h3>
                     </div>
                     <div class="col-md-6 text-end">
-                        <button type="button" class="btn btn-primary" data-bs-toggle="modal"
-                            data-bs-target="#staticBackdrop"><i class="ti ti-plus"></i> Apply Leave</button>
+                        <button type="button" class="btn btn-primary" onclick="openAddModal()"><i class="ti ti-plus"></i> Apply Leave</button>
                     </div>
                 </div>
                 <div class="row mt-3">
@@ -125,5 +124,14 @@
             $('#no_of_days').val(data.no_of_days);
             $('#reason').val(data.reason);
         }
+        openAddModal = () => {
+            $('#staticBackdrop').modal('show');
+            resetForm();
+        }
+        function resetForm() {
+        document.getElementById('leaveForm').reset();
+        document.getElementById('id').value = '';
+        clearErrors();
+    }
     </script>
 @endpush

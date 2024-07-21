@@ -93,14 +93,13 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/js/toastr.min.js"></script>
     <script src="../assets/js/custom.js"></script>
     <script>
-       @if (Session::has('success'))
-       toastr.success("{{ Session::get('success') }}");
+       @if (Session::has('message'))
+       toastr.success("{{ Session::get('message') }}");
        @endif
        @if (Session::has('error'))
        toastr.error("{{ Session::get('error') }}");
        @endif
     </script>
-    @yield('scripts')
     @stack('scripts')
 </body>
 
