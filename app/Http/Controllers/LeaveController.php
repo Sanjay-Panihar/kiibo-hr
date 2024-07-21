@@ -14,10 +14,10 @@ class LeaveController extends Controller
     {
         if ($request->ajax()) {
             $leave = Leave::with('user:id,name')->select('id', 'leave_type', 'applied_on', 'start_date', 'end_date', 'no_of_days', 'reason', 'manager', 'status', 'created_by')
-            ;// ->where('created_by', auth()->user()->id);
+            ->where('created_by', auth()->user()->id);
             return DataTables::of($leave)
                 ->addColumn('status', function ($row) {
-                    return $row->status ? '<span class="badge badge-primary">Active</span>' : '<span class="badge badge-danger">Inactive</span>';
+                    return $row->status ? '<span class="btn btn-primary btn-sm">Active</span>' : '<span class="btn btn-danger btn-sm">Inactive</span>';
                 })
                 ->addColumn('leave_type', function ($row) {
                     return $row->leave_type_name;
@@ -26,7 +26,7 @@ class LeaveController extends Controller
                     return $row->user ? $row->user->name : 'N/A';
                 })
                 ->addColumn('actions', function ($row) {
-                    $btn = '<a href="' . route('admin.leave.edit', $row->id) . '" class="edit btn btn-primary btn-sm"><i class="ti ti-edit"></i></a>';
+                    $btn = '<button class="btn btn-primary btn-sm" onclick="editLeave(' . $row->id . ')"><i class="ti ti-edit"></i></button>';
                     $btn .= '<form action="' . route('admin.leave.delete', $row->id) . '" method="POST" style="display:inline-block;">
                                  ' . csrf_field() . '
                                  ' . method_field('DELETE') . '
@@ -43,27 +43,28 @@ class LeaveController extends Controller
     {
        return $this->updateOrCreate($request);
     }
-    public function update(Request $request, $id)
+    public function update(Request $request)
     {
-        return $this->updateOrCreate($request, $id);
+        return $this->updateOrCreate($request);
     }
-    public function updateOrCreate(Request $request, $id = null)
-    {
+    public function updateOrCreate(Request $request)
+    {\Log::info($request->all());
         try {
             $data = $request->all();
+            $id = $data['id'] ?? 0;
             $validator = Validator::make($data, [
-                'start_date' => 'required|date|after:yesterday',
-                'end_date' => 'required|date|after:start_date',
-                'reason' => 'required|max:255|string',
-                'no_of_days' => 'required|numeric',
-                'leave_type' => 'required|numeric',
+                'start_date'    => 'required|date|after:yesterday',
+                'end_date'      => 'required|date|after:start_date',
+                'reason'        => 'required|max:255|string',
+                'no_of_days'    => 'required|numeric',
+                'leave_type'    => 'required|numeric',
             ]);
 
             if ($validator->fails()) {
                 return response()->json(['success' => false, 'errors' => $validator->errors()], 422);
             } else {
-
-                $data['created_by'] = Auth::user()->id;
+                $userId = Auth::user()->id;
+                $id ? $data['updated_by'] = $userId : $data['created_by'] = $userId;
                 $data['applied_on'] = date('Y-m-d');
 
                 $leave = Leave::updateOrCreate(
@@ -82,7 +83,7 @@ class LeaveController extends Controller
 
     public function edit($id)
     {
-        $leave = Leave::find($id);
+        $leave = Leave::with('user:id,name')->select('id', 'leave_type', 'applied_on', 'start_date', 'end_date', 'no_of_days', 'reason', 'manager', 'status', 'created_by')->find($id);
 
         return response()->json(['success' => true, 'leave' => $leave], 200);
     }
@@ -90,6 +91,6 @@ class LeaveController extends Controller
     {
         Leave::find($id)->delete();
 
-        return response()->json(['success' => true, 'message' => 'Leave deleted successfully'], 200);
+        return redirect()->back()->with(['success' => true, 'message' => 'Leave deleted successfully'], 200);
     }
 }

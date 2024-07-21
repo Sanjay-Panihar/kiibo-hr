@@ -15,7 +15,8 @@
                         <h3>Leave</h3>
                     </div>
                     <div class="col-md-6 text-end">
-                        <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#staticBackdrop"><i class="ti ti-plus"></i> Apply Leave</button>
+                        <button type="button" class="btn btn-primary" data-bs-toggle="modal"
+                            data-bs-target="#staticBackdrop"><i class="ti ti-plus"></i> Apply Leave</button>
                     </div>
                 </div>
                 <div class="row mt-3">
@@ -47,17 +48,16 @@
                 </div>
                 <div class="content-box">
                     <div class="content active">
-                    <x-table id="leave-table" :columns="['id', 'leave_type', 'applied_on', 'start_date', 'end_date','no_of_days', 'reason', 'manager','status', 'created_by']" ajaxUrl="{{ route('admin.leave') }}" />
+                        <x-table id="leave-table" :columns="['id', 'leave_type', 'applied_on', 'start_date', 'end_date', 'no_of_days', 'reason', 'manager', 'status', 'created_by']"
+                            ajaxUrl="{{ route('admin.leave') }}" />
                     </div>
                     <div class="content">
-                    <div class="row mb-3">
-                            
-                        </div>
+                        <div class="row mb-3">
+
                     </div>
                     <div class="content">
-                    <div class="row mb-3">
-                            
-                        </div>
+                        <div class="row mb-3">
+
                     </div>
                 </div>
             </div>
@@ -69,27 +69,61 @@
 @endsection
 
 @push('scripts')
-<script>
-    document.addEventListener('DOMContentLoaded', function () {
-        const tabs = document.querySelectorAll('.tab-btn');
-        const contents = document.querySelectorAll('.content');
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            const tabs = document.querySelectorAll('.tab-btn');
+            const contents = document.querySelectorAll('.content');
 
-        tabs.forEach((tab, index) => {
-            tab.addEventListener('click', () => {
-                tabs.forEach(t => t.classList.remove('active'));
-                tab.classList.add('active');
-                contents.forEach(c => c.classList.remove('active'));
-                contents[index].classList.add('active');
+            tabs.forEach((tab, index) => {
+                tab.addEventListener('click', () => {
+                    tabs.forEach(t => t.classList.remove('active'));
+                    tab.classList.add('active');
+                    contents.forEach(c => c.classList.remove('active'));
+                    contents[index].classList.add('active');
+                });
             });
         });
-    });
-</script>
-<script>
-    $(document).ready(function () {
-        $("#skills, #hobbies").select2({
-            placeholder: "Select",
-            allowClear: true,
+    </script>
+    <script>
+        $(document).ready(function () {
+            $.ajaxSetup({
+                headers: {
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                }
+            });
+            $("#skills, #hobbies").select2({
+                placeholder: "Select",
+                allowClear: true,
+            });
         });
-    });
-</script>
+        function editLeave(id) {
+            let url = "{{ route('admin.leave.edit', ':id') }}";
+            url = url.replace(':id', id);
+            $.ajax({
+                url: url,
+                type: "GET",
+                success: function (data) {
+                    populateForm(data.leave);
+                    $('#staticBackdrop').modal('show');
+
+                },
+                error: function (data) {
+                    console.log("Error:", data);
+                },
+            });
+        }
+        function populateForm(data) {
+            
+            // Set value for select inputs
+            $('#id').val(data.id);
+            $('#leave_type').val(data.leave_type);
+            $('#leave_balance').val(data.leave_balance);
+
+            // Set value for text inputs and textareas
+            $('#start_date').val(data.start_date);
+            $('#end_date').val(data.end_date);
+            $('#no_of_days').val(data.no_of_days);
+            $('#reason').val(data.reason);
+        }
+    </script>
 @endpush

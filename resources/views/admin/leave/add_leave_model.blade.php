@@ -64,6 +64,7 @@
                 </div>
                 <form id="leaveForm">
                     @csrf
+                    <input type="hidden" id="id" name="id">
                     <div class="row mb-3">
                         <div class="col-md-12">
                             <label for="leave_type" class="form-label">Leave Type</label>
@@ -120,7 +121,8 @@
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Cancel</button>
-                        <button type="button" class="btn btn-primary" onclick="leaveRequest('submit')">Submit</button>
+                        <button type="button" class="btn btn-primary"
+                            onclick="leaveRequest('submit')">Submit</button>
                         <button type="button" class="btn btn-success" onclick="leaveRequest('save')">Save</button>
                     </div>
                 </form>
@@ -131,39 +133,58 @@
 
 <script>
     function leaveRequest(type) {
-        let url = "{{ route('admin.leave.store') }}";
-        let method = "POST";
-        const form = document.getElementById('leaveForm');
-        const formData = new FormData(form);
+    var id = $('#id').val();
+    var url, method;
 
-        if (type == 'submit') {
-            formData.append('is_submitted', 1);
-        } else {
-            formData.append('is_saved', 1);
-        }
-        $.ajax({
-            url: url,
-            type: method,
-            data: formData,
-            processData: false,
-            contentType: false,
-            cache: false,
-            dataType: 'json',
-            success: function (response) {
-                if (response.errors) {
-                    showErrors(response.errors);
-                } else {
-                    $('#leaveForm')[0].reset();
-                    toastr.success(response.message);
-                }
-            },
-            error: function (xhr) {
-                if (xhr.status === 422) {
-                    showErrors(xhr.responseJSON.errors);
-                } else {
-                    alert('An error occurred: ' + xhr.responseJSON.message);
-                }
-            }
-        });
+    if (id) {
+        url = "{{ route('admin.leave.update') }}";
+        method = "PUT";
+    } else {
+        url = "{{ route('admin.leave.store') }}";
+        method = "POST";
     }
+
+    const form = document.getElementById('leaveForm');
+    const formData = new FormData(form);
+
+    if (type === 'submit') {
+        formData.append('is_submitted', 1);
+    } else {
+        formData.append('is_saved', 1);
+    }
+
+    if (method === "PUT") {
+        formData.append('_method', 'PUT');
+    }
+
+    $.ajax({
+        url: url,
+        type: 'POST',
+        data: formData,
+        processData: false,
+        contentType: false,
+        dataType: 'json',
+        headers: {
+            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+        },
+        success: function (response) {
+            if (response.errors) {
+                showErrors(response.errors);
+            } else {
+                if (method === "POST") {
+                    $('#leaveForm')[0].reset();
+                }
+                clearErrors();
+                toastr.success(response.message);
+            }
+        },
+        error: function (xhr) {
+            if (xhr.status === 422) {
+                showErrors(xhr.responseJSON.errors);
+            } else {
+                alert('An error occurred: ' + xhr.responseJSON.message);
+            }
+        }
+    });
+}
 </script>
