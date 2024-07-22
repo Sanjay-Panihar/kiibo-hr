@@ -22,42 +22,47 @@
                     <div class="col-md-3">
                         <div class=" justify-content-between align-items-center mb-2">
                             <p><strong>Employee Name:</strong> <span>{{ Auth::user()->name ?? '' }}</span></p>
-
                         </div>
                     </div>
                     <div class="col-md-3">
                         <div class=" justify-content-between align-items-center mb-2">
                             <p><strong>Employee Code:</strong> <span>EMP-045DB</span></p>
-
                         </div>
                     </div>
                     <div class="col-md-3">
                         <div class=" justify-content-between align-items-center mb-2">
                             <p><strong>Month:</strong> <span>{{ Auth::user()->name ?? '' }}</span></p>
-
                         </div>
                     </div>
                 </div>
             </div>
             <div class="tab-container">
                 <div class="tab-box">
-                    <button class="tab-btn active">My Leaves</button>
-                    <button class="tab-btn">Leave Request</button>
-                    <button class="tab-btn">Saved Leaves</button>
+                    <button class="tab-btn active" data-tab="my_leaves">My Leaves</button>
+                    <button class="tab-btn" data-tab="leave_requests">Leave Request</button>
+                    <button class="tab-btn" data-tab="saved_leaves">Saved Leaves</button>
                 </div>
                 <div class="content-box">
-                    <div class="content active">
-                        <x-table id="leave-table" :columns="['id', 'leave_type', 'applied_on', 'start_date', 'end_date', 'no_of_days', 'reason', 'manager', 'status', 'created_by']"
-                            ajaxUrl="{{ route('admin.leave') }}" />
-                    </div>
-                    <div class="content">
-                        <div class="row mb-3">
-
-                    </div>
-                    <div class="content">
-                        <div class="row mb-3">
-
-                    </div>
+                    <table id="leave-table" class="table table-striped">
+                        <thead>
+                            <tr>
+                                <th>ID</th>
+                                <th>Leave Type</th>
+                                <th>Applied On</th>
+                                <th>Start Date</th>
+                                <th>End Date</th>
+                                <th>No. of Days</th>
+                                <th>Reason</th>
+                                <th>Manager</th>
+                                <th>Status</th>
+                                <th>Created By</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <!-- Data will be loaded here via DataTables -->
+                        </tbody>
+                    </table>
                 </div>
             </div>
         </div>
@@ -68,70 +73,123 @@
 @endsection
 
 @push('scripts')
-    <script>
-        document.addEventListener('DOMContentLoaded', function () {
-            const tabs = document.querySelectorAll('.tab-btn');
-            const contents = document.querySelectorAll('.content');
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        const tabs = document.querySelectorAll('.tab-btn');
+        const leaveTable = $('#leave-table').DataTable({
+            processing: true,
+            serverSide: true,
+            ajax: {
+                url: "{{ route('admin.leave') }}",
+                data: function (d) {
+                    d.type = $('.tab-btn.active').data('tab');
+                }
+            },
+            columns: [
+                { data: 'id' },
+                { data: 'leave_type' },
+                { data: 'applied_on' },
+                { data: 'start_date' },
+                { data: 'end_date' },
+                { data: 'no_of_days' },
+                { data: 'reason' },
+                { data: 'manager' },
+                { data: 'status', render: function (data) {
+                        return data ? '<span class="badge bg-primary">Active</span>' : '<span class="badge bg-danger">Inactive</span>';
+                    }
+                },
+                { data: 'created_by', render: function (data, type, row) {
+                        return row.user ? row.user.name : 'N/A';
+                    }
+                },
+                { data: 'actions', orderable: false, searchable: false }
+            ],
+            createdRow: function(row, data, dataIndex) {
+                $(row).find('td:eq(8)').html(data.status); // Render HTML for status column
+            }
+        });
 
-            tabs.forEach((tab, index) => {
-                tab.addEventListener('click', () => {
-                    tabs.forEach(t => t.classList.remove('active'));
-                    tab.classList.add('active');
-                    contents.forEach(c => c.classList.remove('active'));
-                    contents[index].classList.add('active');
-                });
+        tabs.forEach(tab => {
+            tab.addEventListener('click', function () {
+                tabs.forEach(t => t.classList.remove('active'));
+                this.classList.add('active');
+                loadLeaves(this.getAttribute('data-tab'));
             });
         });
-    </script>
-    <script>
-        $(document).ready(function () {
-            $.ajaxSetup({
-                headers: {
-                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+
+        function loadLeaves(tab) {
+            leaveTable.ajax.reload();
+        }
+
+        // Initial load
+        loadLeaves('my_leaves');
+
+        // Reload DataTable after form submission
+        $('#leaveForm').on('submit', function (e) {
+            e.preventDefault();
+            $.ajax({
+                url: $(this).attr('action'),
+                method: $(this).attr('method'),
+                data: $(this).serialize(),
+                success: function (response) {
+                    $('#staticBackdrop').modal('hide');
+                    leaveTable.ajax.reload(); // Reload DataTable
+                },
+                error: function (response) {
+                    // Handle errors here
                 }
             });
-            $("#skills, #hobbies").select2({
-                placeholder: "Select",
-                allowClear: true,
-            });
         });
-        function editLeave(id) {
-            let url = "{{ route('admin.leave.edit', ':id') }}";
-            url = url.replace(':id', id);
-            $.ajax({
-                url: url,
-                type: "GET",
-                success: function (data) {
-                    populateForm(data.leave);
-                    $('#staticBackdrop').modal('show');
+    });
+</script>
+<script>
+    $(document).ready(function () {
+        $.ajaxSetup({
+            headers: {
+                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+            }
+        });
+        $("#skills, #hobbies").select2({
+            placeholder: "Select",
+            allowClear: true,
+        });
+    });
 
-                },
-                error: function (data) {
-                    console.log("Error:", data);
-                },
-            });
-        }
-        function populateForm(data) {
-            
-            // Set value for select inputs
-            $('#id').val(data.id);
-            $('#leave_type').val(data.leave_type);
-            $('#leave_balance').val(data.leave_balance);
+    function editLeave(id) {
+        let url = "{{ route('admin.leave.edit', ':id') }}";
+        url = url.replace(':id', id);
+        $.ajax({
+            url: url,
+            type: "GET",
+            success: function (data) {
+                populateForm(data.leave);
+                $('#staticBackdrop').modal('show');
+            },
+            error: function (data) {
+                console.log("Error:", data);
+            },
+        });
+    }
 
-            // Set value for text inputs and textareas
-            $('#start_date').val(data.start_date);
-            $('#end_date').val(data.end_date);
-            $('#no_of_days').val(data.no_of_days);
-            $('#reason').val(data.reason);
-        }
-        openAddModal = () => {
-            $('#staticBackdrop').modal('show');
-            resetForm();
-        }
-        function resetForm() {
+    function populateForm(data) {
+        $('#id').val(data.id);
+        $('#leave_type').val(data.leave_type);
+        $('#leave_balance').val(data.leave_balance);
+        $('#start_date').val(data.start_date);
+        $('#end_date').val(data.end_date);
+        $('#no_of_days').val(data.no_of_days);
+        $('#reason').val(data.reason);
+    }
+
+    function openAddModal() {
+        $('#staticBackdrop').modal('show');
+        resetForm();
+    }
+
+    function resetForm() {
         document.getElementById('leaveForm').reset();
         document.getElementById('id').value = '';
         clearErrors();
     }
-    </script>
+</script>
 @endpush

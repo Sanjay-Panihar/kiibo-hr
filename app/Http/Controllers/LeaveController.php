@@ -13,14 +13,24 @@ class LeaveController extends Controller
     public function index(Request $request)
     {
         if ($request->ajax()) {
-            $leave = Leave::with('user:id,name')->select('id', 'leave_type', 'applied_on', 'start_date', 'end_date', 'no_of_days', 'reason', 'manager', 'status', 'created_by')
-            ->where('created_by', auth()->user()->id);
-            return DataTables::of($leave)
+            $type = $request->query('type', 'my_leaves');
+            $query = Leave::with('user:id,name')->select('id', 'leave_type', 'applied_on', 'start_date', 'end_date', 'no_of_days', 'reason', 'manager', 'status', 'created_by');
+
+            switch ($type) {
+                case 'leave_requests':
+                    $query->where('is_submitted', 1);
+                    break;
+                case 'saved_leaves':
+                    $query->where('is_saved', 1);
+                    break;
+                default:
+                    $query->where('created_by', auth()->user()->id);
+                    break;
+            }
+
+            return DataTables::of($query)
                 ->addColumn('status', function ($row) {
                     return $row->status ? '<span class="btn btn-primary btn-sm">Active</span>' : '<span class="btn btn-danger btn-sm">Inactive</span>';
-                })
-                ->addColumn('leave_type', function ($row) {
-                    return $row->leave_type_name;
                 })
                 ->addColumn('created_by', function ($row) {
                     return $row->user ? $row->user->name : 'N/A';
@@ -37,8 +47,10 @@ class LeaveController extends Controller
                 ->rawColumns(['status', 'actions'])
                 ->make(true);
         }
+
         return view('admin.leave.index');
     }
+
     public function store(Request $request)
     {
        return $this->updateOrCreate($request);
