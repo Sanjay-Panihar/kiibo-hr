@@ -64,6 +64,7 @@
                 </div>
                 <form id="leaveForm">
                     @csrf
+                    <input type="hidden" id="id" name="id">
                     <div class="row mb-3">
                         <div class="col-md-12">
                             <label for="leave_type" class="form-label">Leave Type</label>
@@ -96,7 +97,7 @@
                     <div class="row mb-3">
                         <div class="col-md-12">
                             <label for="no_of_days" class="form-label">No. of Days</label>
-                            <input type="number" class="form-control" id="no_of_days" name="no_of_days">
+                            <input type="number" class="form-control" id="no_of_days" name="no_of_days" readonly>
                             <span class="text-danger" id="no_of_days_error"></span>
                         </div>
                     </div>
@@ -131,29 +132,48 @@
 
 <script>
     function leaveRequest(type) {
-        let url = "{{ route('admin.leave.store') }}";
-        let method = "POST";
+        var id = $('#id').val();
+        var url, method;
+
+        if (id) {
+            url = "{{ route('admin.leave.update') }}";
+            method = "PUT";
+        } else {
+            url = "{{ route('admin.leave.store') }}";
+            method = "POST";
+        }
+
         const form = document.getElementById('leaveForm');
         const formData = new FormData(form);
 
-        if (type == 'submit') {
+        if (type === 'submit') {
             formData.append('is_submitted', 1);
         } else {
             formData.append('is_saved', 1);
         }
+
+        if (method === "PUT") {
+            formData.append('_method', 'PUT');
+        }
+
         $.ajax({
             url: url,
-            type: method,
+            type: 'POST',
             data: formData,
             processData: false,
             contentType: false,
-            cache: false,
             dataType: 'json',
+            headers: {
+                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+            },
             success: function (response) {
                 if (response.errors) {
                     showErrors(response.errors);
                 } else {
-                    $('#leaveForm')[0].reset();
+                    if (method === "POST") {
+                        $('#leaveForm')[0].reset();
+                    }
+                    clearErrors();
                     toastr.success(response.message);
                 }
             },
@@ -165,5 +185,16 @@
                 }
             }
         });
+    }
+
+    document.getElementById('start_date').addEventListener('change', calculateDays);
+    document.getElementById('end_date').addEventListener('change', calculateDays);
+
+    function calculateDays() {
+        var startDate = new Date($('#start_date').val());
+        var endDate = new Date($('#end_date').val());
+        var timeDiff = Math.abs(endDate.getTime() - startDate.getTime());
+        var diffDays = Math.ceil(timeDiff / (1000 * 3600 * 24));
+        $('#no_of_days').val(diffDays);
     }
 </script>

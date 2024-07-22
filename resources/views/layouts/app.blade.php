@@ -92,8 +92,14 @@
     <script src="../assets/js/jquery.dataTables.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/js/toastr.min.js"></script>
     <script src="../assets/js/custom.js"></script>
-
-    @yield('scripts')
+    <script>
+       @if (Session::has('message'))
+       toastr.success("{{ Session::get('message') }}");
+       @endif
+       @if (Session::has('error'))
+       toastr.error("{{ Session::get('error') }}");
+       @endif
+    </script>
     @stack('scripts')
 </body>
 

@@ -47,3 +47,6 @@ function showErrors(errors) {
         }
     }
 }
+function clearErrors() {
+    $('.text-danger').text('');
+}
