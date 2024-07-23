@@ -41,5 +41,8 @@ Route::group(['middleware' => 'auth'], function () {
         Route::get('/edit/{id}', [EventController::class, 'edit'])->name('event.edit');
         Route::delete('/delete/{id}', [EventController::class, 'delete'])->name('event.delete');
 
+        Route::resource('employee-report', EmployeeReportController::class);
+
+
     });
 });

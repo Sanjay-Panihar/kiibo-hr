@@ -15,34 +15,35 @@
 </div>
 
 @push('scripts')
-<script>
-    $(document).ready(function() {
-        $('#{{ $id }}').DataTable({
-            processing: true,
-            serverSide: true,
-            ajax: '{{ $ajaxUrl }}',
-            columns: [
-                @foreach ($columns as $column)
-                    { data: '{{ $column }}', name: '{{ $column }}' },
-                @endforeach
-                { 
-                    data: 'actions', 
-                    name: 'actions', 
-                    orderable: false, 
-                    searchable: false 
-                }
-            ],
-            columnDefs: [
-                { targets: '_all', defaultContent: '' }
-            ]
+    <script>
+        $(document).ready(function () {
+            $('#{{ $id }}').DataTable({
+                processing: true,
+                serverSide: true,
+                ajax: '{{ $ajaxUrl }}',
+                columns: [
+                    @foreach ($columns as $column)
+                        { data: '{{ $column }}', name: '{{ $column }}' },
+                    @endforeach
+                    {
+                        data: 'actions',
+                        name: 'actions',
+                        orderable: false,
+                        searchable: false
+                    }
+                ],
+                columnDefs: [
+                    { targets: '_all', defaultContent: '--' } // Display '--' for empty data
+                ]
+            });
         });
-    });
-    $(document).on('click', '.delete-btn', function(e) {
+
+        $(document).on('click', '.delete-btn', function (e) {
             e.preventDefault();
             var form = $(this).closest('form');
             if (confirm('Are you sure you want to delete this item?')) {
                 form.submit();
             }
         });
-</script>
+    </script>
 @endpush
