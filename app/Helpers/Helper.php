@@ -1,8 +1,7 @@
 <?php
+
 namespace App\Helpers;
 
-use App\Models\User;
-use App\Models\UserDetails;
 class Helper
 {
     public static function saveImage($image, $path)

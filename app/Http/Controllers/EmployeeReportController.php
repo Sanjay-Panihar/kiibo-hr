@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use Yajra\DataTables\Facades\DataTables;
 use Auth;
 use App\Helpers\Helper;
+use Illuminate\Support\Facades\Validator;
 
 class EmployeeReportController extends Controller
 {
@@ -67,13 +68,17 @@ class EmployeeReportController extends Controller
     public function addOrUpdate(Request $request)
     {
         try {
-            $request->validate([
+            $data = $request->all();
+
+           $validator = Validator::make($data, [
                 'emp_code'          => 'required|string|max:10',
                 'salutation'        => 'required|string|max:5',
-                'name'              => 'required|string|max:50',
+                'first_name'        => 'required|string|max:50',
+                'middle_name'       => 'required|string|max:50',
+                'last_name'         => 'required|string|max:50',
                 'email'             => 'required|string|email|max:50|unique:users,'. $request->id,
                 'phone'             => 'required|numeric|digits:10',
-                'address'           => 'required|string|max:255',
+                'address'           => 'nullable|string|max:255',
                 'designation'       => 'required|string|max:50',
                 'department'        => 'required|string|max:30',
                 'date_of_joining'   => 'required|date',
@@ -86,17 +91,25 @@ class EmployeeReportController extends Controller
                 'department_head'   => 'nullable|string|max:50',
                 'reporting_manager' => 'nullable|string|max:50',
                 'role_id'           => 'nullable|exists:roles,id|numeric',
-                'notice_period'     => 'required',
-                'entity'            => 'required',
+                'notice_period'     => 'nullable|numeric|digits:10',
+                'entity'            => 'nullable|string|max:255',
             ]);
-            $request->id ? $request->merge(['updated_by' => Auth::user()->id]) : $request->merge(['created_by' => Auth::user()->id]);
+
+            if ($validator->fails()) {
+                return redirect()->back()->with('error', $validator->errors()->first());
+            } else {
+                $data['id'] ? $data['updated_by'] = Auth::user()->id : $data['created_by'] = Auth::user()->id;
+                $data['name'] = $data['first_name'].' '.$data['middle_name'].' '.$data['last_name'];
+
             if ($request->hasFile('image')) {
-                Helper::saveImage($request->image, 'employee-report');
-                $request->merge(['image' => $request->image->store('employee-report', 'public')]);
+                $image = Helper::saveImage($request->image, 'employee-report');
+                $data['image'] = $image;
             }
             EmployeeReport::updateOrCreate(['id' => $request->id], $request->all());
             
-            return redirect()->route('admin.employee-report.index')->with('success', 'Employee Report Added Successfully');
+            return redirect()->route('admin.employee-report.index')->with('message', 'Employee Report Added Successfully');
+                
+            }
         } catch (\Exception $e) {
             \Log::info($e->getMessage());
             return redirect()->back()->with('error', $e->getMessage());

@@ -57,9 +57,9 @@
                                     <label for="gender" class="form-label">Gender</label>
                                    <select name="gender" id="gender" class="form-control @error('gender') is-invalid @enderror">
                                         <option value="">Select Gender</option>
-                                        <option value="Male" {{ old('gender') == 'Male' ? 'selected' : '' }}>Male</option>
-                                        <option value="Female" {{ old('gender') == 'Female' ? 'selected' : ''}}> Female</option>
-                                        <option value="Other" {{ old('Other' ) == 'Other' ? 'selected' : ''}}> Other</option>
+                                        <option value="1" {{ old('gender') == '1' ? 'selected' : '' }}>Male</option>
+                                        <option value="2" {{ old('gender') == '2' ? 'selected' : ''}}> Female</option>
+                                        <option value="3" {{ old('Other' ) == '3' ? 'selected' : ''}}> Other</option>
                                     </select>
                                     @error('gender')
                                         <div class="invalid-feedback">{{ $message }}</div>
@@ -96,6 +96,13 @@
                                         <div class="invalid-feedback">{{ $message }}</div>
                                     @enderror
                                 </div>
+                                <div class="mb-3">
+                                    <label for="image" class="form-label">Image</label>
+                                    <input type="file" class="form-control @error('image') is-invalid @enderror" id="image" name="image" value="{{ old('image') }}" required>
+                                    @error('image')
+                                        <div class="invalid-feedback">{{ $message }}</div>
+                                    @enderror
+                                </div>
                         </div>
                         <div class="col-md-6">
                             <div class="mb-3">
@@ -120,7 +127,7 @@
                             </div>
                             <div class="mb-3">
                                 <label for="phone" class="form-label">Phone</label>
-                                <input type="text" class="form-control @error('phone') is-invalid @enderror" id="phone" name="phone" value="{{ old('phone') }}" required>
+                                <input type="text" class="form-control @error('phone') is-invalid @enderror" id="phone" name="phone" value="{{ old('phone') }}" maxlength="10" required>
                                 @error('phone')
                                     <div class="invalid-feedback">{{ $message }}</div>
                                 @enderror
@@ -140,8 +147,8 @@
                                 @enderror
                             </div>
                             <div class="mb-3">
-                                <label for="dob" class="form-label">Date Of Birth</label>
-                                <input type="date" class="form-control @error('dob') is-invalid @enderror" id="dob" name="dob" value="{{ old('dob') }}" required>
+                                <label for="date_of_birth" class="form-label">Date Of Birth</label>
+                                <input type="date" class="form-control @error('date_of_birth') is-invalid @enderror" id="date_of_birth" name="date_of_birth" value="{{ old('date_of_birth') }}" required>
                                 @error('dob')
                                     <div class="invalid-feedback">{{ $message }}</div>
                                 @enderror
