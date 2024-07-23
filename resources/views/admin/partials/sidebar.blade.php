@@ -4,7 +4,7 @@
     <div class="brand-logo d-flex align-items-center justify-content-between"
       style="background-color: rgb(73 190 255);">
       <a href="./index.html" class="text-nowrap logo-img">
-        <img src="../assets/images/logos/dark-logo.svg" width="180" alt="" />
+        <img src="{{ asset('../assets/images/logos/dark-logo.svg')}}" width="180" alt="" />
       </a>
       <div class="close-btn d-xl-none d-block sidebartoggler cursor-pointer" id="sidebarCollapse">
         <i class="ti ti-x fs-8"></i>
@@ -78,13 +78,56 @@
             <span class="hide-menu">Timesheet</span>
           </a>
         </li>
-        <li class="sidebar-item">
+        <!-- <li class="sidebar-item">
           <a class="sidebar-link" href="{{ route('admin.leave') }}" aria-expanded="false">
             <span>
               <i class="ti ti-typography"></i>
             </span>
             <span class="hide-menu">Leaves</span>
           </a>
+        </li> -->
+        <li class="sidebar-item">
+          <a class="sidebar-link" href="javascript:void(0)" aria-expanded="false">
+            <span>
+              <i class="ti ti-beach"></i>
+            </span>
+            <span class="hide-menu">Leaves</span>
+            <span class="chevron">
+              <i class="ti ti-chevron-down"></i>
+            </span>
+          </a>
+          <ul class="sidebar-submenu" style="display: none;">
+            <li class="sidebar-subitem">
+              <a class="sidebar-sublink" href="{{ route('admin.leave') }}">
+                <i class="ti ti-ambulance"></i>
+                <span>Leave Details</span>
+              </a>
+            </li>
+            <li class="sidebar-subitem">
+              <a class="sidebar-sublink" href="#submenu1">
+                <i class="ti ti-file-plus"></i>
+                <span>Apply Leave</span>
+              </a>
+            </li>
+            <li class="sidebar-subitem">
+              <a class="sidebar-sublink" href="#submenu2">
+                <i class="ti ti-pencil"></i>
+                <span>Employee Leave Entry</span>
+              </a>
+            </li>
+            <li class="sidebar-subitem">
+              <a class="sidebar-sublink" href="#submenu2">
+                <i class="ti ti-eraser"></i>
+                <span>Cancel Employee Leave Entry</span>
+              </a>
+            </li>
+            <li class="sidebar-subitem">
+              <a class="sidebar-sublink" href="#submenu2">
+                <i class="ti ti-report"></i>
+                <span>Employee Leave Summary</span>
+              </a>
+            </li>
+          </ul>
         </li>
         <li class="sidebar-item">
           <a class="sidebar-link" href="./ui-typography.html" aria-expanded="false">
@@ -111,7 +154,7 @@
           </a>
         </li>
         <li class="sidebar-item">
-          <a class="sidebar-link" href="./ui-typography.html" aria-expanded="false">
+          <a class="sidebar-link" href="{{ route('admin.employee-report.index') }}" aria-expanded="false">
             <span>
               <i class="ti ti-mood-happy"></i>
             </span>

@@ -5,15 +5,15 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>@yield('title', 'Welcome') - Kiibo</title>
-    <link rel="shortcut icon" type="image/png" href="../assets/images/logos/favicon.png" />
-    <link rel="stylesheet" href="../assets/css/styles.min.css" />
-    <link rel="stylesheet" href="../assets/css/select2.min.css" />
+    <link rel="shortcut icon" type="image/png" href="{{ asset('../assets/images/logos/favicon.png')}}" />
+    <link rel="stylesheet" href="{{ asset('../assets/css/styles.min.css')}}" />
+    <link rel="stylesheet" href="{{ asset('../assets/css/select2.min.css')}}" />
     <!-- <link rel="stylesheet" href="../assets/css/dataTables.min.css" /> -->
     <link rel="stylesheet" href="https://cdn.datatables.net/1.11.3/css/jquery.dataTables.min.css">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.css" rel="stylesheet">
 
 
-    <link rel="stylesheet" href="../assets/css/custom.css">
+    <link rel="stylesheet" href="{{ asset('../assets/css/custom.css')}}">
 
     <!-- CSRF Token -->
     <meta name="csrf-token" content="{{ csrf_token() }}">
@@ -79,19 +79,19 @@
     @yield('content')
 
 
-    <script src="../assets/libs/jquery/dist/jquery.min.js"></script>
-    <script src="../assets/libs/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
-    <script src="../assets/js/sidebarmenu.js"></script>
-    <script src="../assets/js/app.min.js"></script>
-    <script src="../assets/libs/apexcharts/dist/apexcharts.min.js"></script>
-    <script src="../assets/libs/simplebar/dist/simplebar.js"></script>
-    <script src="../assets/js/dashboard.js"></script>
-    <script src="../assets/js/jquery-ui.js"></script>
-    <script src="../assets/js/select2.min.js"></script>
+    <script src="{{ asset('../assets/libs/jquery/dist/jquery.min.js')}}"></script>
+    <script src="{{ asset('../assets/libs/bootstrap/dist/js/bootstrap.bundle.min.js')}}"></script>
+    <script src="{{ asset('../assets/js/sidebarmenu.js')}}"></script>
+    <script src="{{ asset('../assets/js/app.min.js')}}"></script>
+    <script src="{{ asset('../assets/libs/apexcharts/dist/apexcharts.min.js')}}"></script>
+    <script src="{{ asset('../assets/libs/simplebar/dist/simplebar.js')}}"></script>
+    <script src="{{ asset('../assets/js/dashboard.js')}}"></script>
+    <script src="{{ asset('../assets/js/jquery-ui.js')}}"></script>
+    <script src="{{ asset('../assets/js/select2.min.js')}}"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
-    <script src="../assets/js/jquery.dataTables.min.js"></script>
+    <script src="{{ asset('../assets/js/jquery.dataTables.min.js')}}"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/js/toastr.min.js"></script>
-    <script src="../assets/js/custom.js"></script>
+    <script src="{{ asset('../assets/js/custom.js')}}"></script>
     <script>
        @if (Session::has('message'))
        toastr.success("{{ Session::get('message') }}");
