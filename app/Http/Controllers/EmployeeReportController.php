@@ -68,15 +68,14 @@ class EmployeeReportController extends Controller
     public function addOrUpdate(Request $request)
     {
         try {
-            $data = $request->all();
-
-           $validator = Validator::make($data, [
+            // Validate the request data
+            $validator = Validator::make($request->all(), [
                 'emp_code'          => 'required|string|max:10',
                 'salutation'        => 'required|string|max:5',
                 'first_name'        => 'required|string|max:50',
-                'middle_name'       => 'required|string|max:50',
+                'middle_name'       => 'nullable|string|max:50',
                 'last_name'         => 'required|string|max:50',
-                'email'             => 'required|string|email|max:50|unique:users,'. $request->id,
+                'email'             => 'required|string|email|max:50|unique:users,email,' . $request->id,
                 'phone'             => 'required|numeric|digits:10',
                 'address'           => 'nullable|string|max:255',
                 'designation'       => 'required|string|max:50',
@@ -91,28 +90,35 @@ class EmployeeReportController extends Controller
                 'department_head'   => 'nullable|string|max:50',
                 'reporting_manager' => 'nullable|string|max:50',
                 'role_id'           => 'nullable|exists:roles,id|numeric',
-                'notice_period'     => 'nullable|numeric|digits:10',
+                'notice_period'     => 'nullable|numeric',
                 'entity'            => 'nullable|string|max:255',
             ]);
 
             if ($validator->fails()) {
-                return redirect()->back()->with('error', $validator->errors()->first());
-            } else {
-                $data['id'] ? $data['updated_by'] = Auth::user()->id : $data['created_by'] = Auth::user()->id;
-                $data['name'] = $data['first_name'].' '.$data['middle_name'].' '.$data['last_name'];
+                return redirect()->back()->withErrors($validator)->withInput();
+            }
+
+            $data = $request->except(['first_name', 'middle_name', 'last_name']);
+            $data['name'] = trim($request->first_name . ' ' . $request->middle_name . ' ' . $request->last_name);
 
             if ($request->hasFile('image')) {
-                $image = Helper::saveImage($request->image, 'employee-report');
-                $data['image'] = $image;
+                $imagePath = Helper::saveImage($request->file('image'), 'employee-report');
+                $data['image'] = $imagePath;
             }
-            EmployeeReport::updateOrCreate(['id' => $request->id], $request->all());
-            
+
+            if ($request->has('id')) {
+                $data['updated_by'] = Auth::user()->id;
+            } else {
+                $data['created_by'] = Auth::user()->id;
+            }
+
+            EmployeeReport::updateOrCreate(['id' => $request->id], $data);
+
             return redirect()->route('admin.employee-report.index')->with('message', 'Employee Report Added Successfully');
-                
-            }
+
         } catch (\Exception $e) {
-            \Log::info($e->getMessage());
-            return redirect()->back()->with('error', $e->getMessage());
+            \Log::error($e->getMessage());
+            return redirect()->back()->with('error', 'An error occurred while processing your request.');
         }
     }
 
