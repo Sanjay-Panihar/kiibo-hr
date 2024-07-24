@@ -48,8 +48,8 @@ class EmployeeReportController extends Controller
 
     public function edit($id)
     {
-        $data = EmployeeReport::find($id);
-        return view('admin.employee-report.edit', compact('data'));
+        $employeeReport = EmployeeReport::find($id);
+        return view('admin.employee-report.edit', compact('employeeReport'));
     }
 
     public function update(Request $request, $id)
@@ -61,8 +61,12 @@ class EmployeeReportController extends Controller
 
     public function destroy($id)
     {
-        EmployeeReport::find($id)->delete();
-        return redirect()->route('admin.employee-report.index')->with('success', 'Employee Report Deleted Successfully');
+        $employee = EmployeeReport::find($id);
+        if(!empty($employee->image)){
+            unlink(public_path('storage/'.$employee->image));
+        }
+        $employee->delete();
+        return redirect()->route('admin.employee-report.index')->with('message', 'Employee Report Deleted Successfully');
     }
 
     public function addOrUpdate(Request $request)
