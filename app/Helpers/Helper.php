@@ -7,7 +7,8 @@ class Helper
     public static function saveImage($image, $path)
     {
         $imageName = time() . '.' . $image->getClientOriginalExtension();
-        $image->move($path, $imageName);
+        $image->storeAs('public/',$imageName);
+
         return $imageName;
     }
 }

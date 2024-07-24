@@ -23,7 +23,7 @@
                 <div class="content active">
                     <div class="row">
                         <div class="col-md-6">
-                            <form action="{{ route('admin.employee-report.store') }}" method="POST">
+                            <form action="{{ route('admin.employee-report.store') }}" method="POST" enctype="multipart/form-data">
                                 @csrf
                                 <div class="mb-3">
                                     <label for="emp_code" class="form-label">Employee Code</label>
@@ -215,7 +215,7 @@
                             <div class="mb-3">
                                 <label for="blood_group" class="form-label">Blood Group</label>
                                 <select class="form-select @error('blood_group') is-invalid @enderror" id="blood_group"
-                                    name="blood_group" required>
+                                    name="blood_group">
                                     <option value="">Select Blood Group</option>
                                     <option value="A+" {{ old('blood_group') == 'A+' ? 'selected' : '' }}>A+</option>
                                     <option value="A-" {{ old('blood_group') == 'A-' ? 'selected' : '' }}>A-</option>
