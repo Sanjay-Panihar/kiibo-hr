@@ -48,8 +48,8 @@ class EmployeeReportController extends Controller
 
     public function edit($id)
     {
-        $data = EmployeeReport::find($id);
-        return view('admin.employee-report.edit', compact('data'));
+        $employeeReport = EmployeeReport::find($id);
+        return view('admin.employee-report.edit', compact('employeeReport'));
     }
 
     public function update(Request $request, $id)
