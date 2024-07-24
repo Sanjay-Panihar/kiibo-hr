@@ -11,4 +11,10 @@ class Helper
 
         return $imageName;
     }
+    public static function deleteImage($path)
+    {
+        if (file_exists(public_path($path))) {
+            unlink(public_path($path));
+        }
+    }
 }
