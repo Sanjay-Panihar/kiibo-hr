@@ -16,8 +16,4 @@ class EmployeeReport extends Model
     {
         return $this->belongsTo(User::class, 'created_by', 'id');
     }
-    public function setFullNameAttribute($value)
-    {
-        $this->attributes['name'] = trim($this->first_name . ' ' . $this->middle_name . ' ' . $this->last_name);
-    }
 }

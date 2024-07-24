@@ -15,10 +15,12 @@ return new class extends Migration
             $table->increments('id');
             $table->string('emp_code', 10)->nullable();
             $table->string('salutation', 5);
-            $table->string('name', 50);
+            $table->string('first_name', 50);
+            $table->string('middle_name', 50)->nullable();
+            $table->string('last_name', 50);
             $table->string('email', 50)->unique();
             $table->string('phone', 10);
-            $table->string('address', 255);
+            $table->string('address', 255)->nullable();
             $table->string('designation', 50);
             $table->string('department', 30);
             $table->date('date_of_joining');

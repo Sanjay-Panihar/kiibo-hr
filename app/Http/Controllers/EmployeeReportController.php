@@ -14,7 +14,7 @@ class EmployeeReportController extends Controller
     public function index(Request $request)
     {
         if ($request->ajax()) {
-            $event = EmployeeReport::with('user:id,name')->select('id',  'emp_code', 'salutation', 'name', 'email', 'phone', 'address', 'designation', 'department', 'date_of_joining', 'date_of_birth', 'gender', 'blood_group', 'marital_status', 'location', 'image', 'department_head', 'reporting_manager', 'role_id', 'notice_period', 'entity',);
+            $event = EmployeeReport::with('user:id,name')->select('id',  'emp_code', 'salutation', 'first_name','last_name', 'email', 'phone', 'address', 'designation', 'department', 'date_of_joining', 'date_of_birth', 'gender', 'blood_group', 'marital_status', 'location', 'image', 'department_head', 'reporting_manager', 'role_id', 'notice_period', 'entity',);
             return DataTables::of($event)
                 ->addColumn('status', function($row){
                     return $row->status ? '<span class="badge badge-primary">Active</span>' : '<span class="badge badge-danger">Inactive</span>';
@@ -73,8 +73,8 @@ class EmployeeReportController extends Controller
     public function addOrUpdate(Request $request)
     {
         try {
-            // Validate the request data
-            $validator = Validator::make($request->all(), [
+            $data = $request->all();
+            $validator = Validator::make($data, [
                 'emp_code'          => 'required|string|max:10',
                 'salutation'        => 'required|string|max:5',
                 'first_name'        => 'required|string|max:50',
@@ -103,9 +103,6 @@ class EmployeeReportController extends Controller
                 return redirect()->back()->withErrors($validator)->withInput();
             }
 
-            $data = $request->except(['first_name', 'middle_name', 'last_name']);
-            $data['name'] = trim($request->first_name . ' ' . $request->middle_name . ' ' . $request->last_name);
-
             if ($request->hasFile('image')) {
                 $imagePath = Helper::saveImage($request->file('image'), 'employee-report');
                 $data['image'] = $imagePath;
@@ -118,7 +115,7 @@ class EmployeeReportController extends Controller
                 $action = 'create';
                 $data['created_by'] = Auth::user()->id;
             }
-
+           
             EmployeeReport::updateOrCreate(['id' => $request->id], $data);
 
             return redirect()->route('admin.employee-report.index')->with('message', 'Employee Report ' . $action . ' Successfully');
