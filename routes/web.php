@@ -42,7 +42,9 @@ Route::group(['middleware' => 'auth'], function () {
         Route::delete('/delete/{id}', [EventController::class, 'delete'])->name('event.delete');
 
         Route::resource('employee-report', EmployeeReportController::class);
-
+        Route::get('settings', [SettingController::class, 'index'])->name('settings');
+        Route::post('change-password', [SettingController::class, 'changePassword'])->name('change-password');
+        Route::get('delete-account', [SettingController::class, 'deleteAccount'])->name('delete-account');
 
     });
 });
