@@ -57,7 +57,7 @@
                             </form>
                         </div>
                         <div class="col-md-6">
-                            <a href="{{ route('admin.delete-account') }}" class="btn btn-danger">Delete My Account</a>
+                            <button  onclick="deleteAccount()" class="btn btn-danger">Delete My Account</button>
                         </div>
                     </div>
                 </div>
@@ -67,3 +67,14 @@
     </div>
 </div>
 @endsection
+
+@push('scripts')
+<script>
+    function deleteAccount()
+    {
+        if (confirm('Are you sure you want to delete your account?')) {
+            window.location.href = "{{ route('admin.delete-account') }}";
+        }
+    }
+</script>
+@endpush
