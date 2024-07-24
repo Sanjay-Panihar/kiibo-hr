@@ -49,6 +49,7 @@ class EmployeeReportController extends Controller
     public function edit($id)
     {
         $employeeReport = EmployeeReport::find($id);
+
         return view('admin.employee-report.edit', compact('employeeReport'));
     }
 
@@ -111,14 +112,16 @@ class EmployeeReportController extends Controller
             }
 
             if ($request->has('id')) {
+                $action = 'update';
                 $data['updated_by'] = Auth::user()->id;
             } else {
+                $action = 'create';
                 $data['created_by'] = Auth::user()->id;
             }
 
             EmployeeReport::updateOrCreate(['id' => $request->id], $data);
 
-            return redirect()->route('admin.employee-report.index')->with('message', 'Employee Report Added Successfully');
+            return redirect()->route('admin.employee-report.index')->with('message', 'Employee Report ' . $action . ' Successfully');
 
         } catch (\Exception $e) {
             \Log::error($e->getMessage());
