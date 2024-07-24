@@ -23,12 +23,14 @@
                 <div class="content active">
                     <div class="row">
                         <div class="col-md-6">
-                            <form action="{{ route('admin.employee-report.store') }}" method="POST" enctype="multipart/form-data">
+                            <form action="{{ route('admin.employee-report.store') }}" method="POST"
+                                enctype="multipart/form-data">
                                 @csrf
                                 <div class="mb-3">
                                     <label for="emp_code" class="form-label">Employee Code</label>
                                     <input type="text" class="form-control @error('emp_code') is-invalid @enderror"
-                                        id="emp_code" name="emp_code" value="{{ old('emp_code') }}" maxlength="10" required>
+                                        id="emp_code" name="emp_code" value="{{ old('emp_code') }}" maxlength="10"
+                                        required>
                                     @error('emp_code')
                                         <div class="invalid-feedback">{{ $message }}</div>
                                     @enderror
@@ -72,7 +74,8 @@
                                 </div>
                                 <div class="mb-3">
                                     <label for="date_of_joining" class="form-label">Joining Date</label>
-                                    <input type="date" class="form-control @error('date_of_joining') is-invalid @enderror"
+                                    <input type="date"
+                                        class="form-control @error('date_of_joining') is-invalid @enderror"
                                         id="date_of_joining" name="date_of_joining" value="{{ old('date_of_joining') }}"
                                         required>
                                     @error('date_of_joining')
@@ -81,7 +84,8 @@
                                 </div>
                                 <div class="mb-3">
                                     <label for="notice_period" class="form-label">Notice Period</label>
-                                    <input type="text" class="form-control @error('notice_period') is-invalid @enderror"
+                                    <input type="number"
+                                        class="form-control @error('notice_period') is-invalid @enderror"
                                         id="notice_period" name="notice_period" value="{{ old('notice_period') }}"
                                         required>
                                     @error('notice_period')

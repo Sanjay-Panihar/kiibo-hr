@@ -21,7 +21,7 @@
             </div>
             <div class="content-box">
                 <div class="content active">
-                    <x-table id="employee-report-table" :columns="['id', 'emp_code', 'name', 'phone', 'designation', 'location', 'date_of_joining']" ajaxUrl="{{ route('admin.employee-report.index') }}" />
+                    <x-table id="employee-report-table" :columns="['id', 'emp_code', 'first_name','last_name', 'phone', 'designation', 'location', 'date_of_joining']" ajaxUrl="{{ route('admin.employee-report.index') }}" />
                 </div>
             </div>
         </div>
