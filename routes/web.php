@@ -46,5 +46,7 @@ Route::group(['middleware' => 'auth'], function () {
         Route::post('change-password', [SettingController::class, 'changePassword'])->name('change-password');
         Route::get('delete-account', [SettingController::class, 'deleteAccount'])->name('delete-account');
 
+        Route::get('help-and-support', [HelpAndSupportController::class, 'index'])->name('help-and-support');
+
     });
 });
