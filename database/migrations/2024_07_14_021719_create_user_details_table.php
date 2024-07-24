@@ -26,8 +26,6 @@ return new class extends Migration
             $table->date('date_of_birth')->nullable();
             $table->string('image', 150)->nullable();
             $table->string('role', 20)->nullable();
-            $table->timestamp('last_login_at')->nullable();
-            $table->ipAddress('last_login_ip')->nullable();
             $table->string('skills', 255)->nullable();
             $table->string('hobbies', 255)->nullable();
             $table->text('about_me')->nullable();

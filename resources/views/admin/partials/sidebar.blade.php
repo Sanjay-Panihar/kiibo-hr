@@ -178,7 +178,7 @@
           </a>
         </li>
         <li class="sidebar-item">
-          <a class="sidebar-link" href="./ui-typography.html" aria-expanded="false">
+          <a class="sidebar-link" href="{{ route('admin.settings') }}" aria-expanded="false">
             <span>
               <i class="ti ti-settings"></i>
             </span>
@@ -186,7 +186,7 @@
           </a>
         </li>
         <li class="sidebar-item">
-          <a class="sidebar-link" href="./ui-typography.html" aria-expanded="false">
+          <a class="sidebar-link" href="{{ route('admin.help-and-support') }}" aria-expanded="false">
             <span>
               <i class="ti ti-help"></i>
             </span>
