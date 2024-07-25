@@ -20,10 +20,10 @@ return new class extends Migration
             $table->string('type', 255)->nullable();
             $table->time('punch_out')->nullable();
             $table->time('hours')->nullable();
-            $table->integer('A_R')->nullable(); // Assumed 'AR' means 'Actual Rest'
-            $table->integer('L_R')->nullable(); // Assumed 'LR' means 'Lunch Rest'
-            $table->integer('SHR_H')->nullable(); // Assumed 'SHR_H' means 'Short Hours'
-            $table->integer('W_H')->nullable(); // Assumed 'W_H' means 'Worked Hours'
+            $table->integer('A_R')->nullable()->default('R')->comment('Attendence Regularisation');
+            $table->integer('L_R')->nullable()->comment('Leave Regularisation');
+            $table->integer('SHR_H')->nullable()->comment('Short Hours');
+            $table->integer('W_H')->nullable()->comment('Worked Hours');
             $table->tinyInteger('status')->default(1)->comment('0=Inactive, 1=Active');
             $table->unsignedInteger('created_by');
             $table->foreign('created_by')->references('id')->on('users')->onDelete('cascade');

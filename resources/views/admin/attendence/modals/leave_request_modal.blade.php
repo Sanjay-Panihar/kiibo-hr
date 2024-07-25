@@ -1,9 +1,10 @@
-<div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
-    aria-labelledby="staticBackdropLabel" aria-hidden="true">
+
+<div class="modal fade" id="leaveRequest" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+    aria-labelledby="leaveRequestLabel" aria-hidden="true">
     <div class="modal-dialog  modal-lg">
         <div class="modal-content">
             <div class="modal-header">
-                <h1 class="modal-title fs-5" id="exampleModalLabel">Apply Leave</h1>
+                <h1 class="modal-title fs-5" id="exampleModalLabel">Leave Request</h1>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
@@ -84,72 +85,3 @@
         </div>
     </div>
 </div>
-
-<script>
-    function leaveRequest(type) {
-        var id = $('#id').val();
-        var url, method;
-
-        if (id) {
-            url = "{{ route('admin.leave.update') }}";
-            method = "PUT";
-        } else {
-            url = "{{ route('admin.leave.store') }}";
-            method = "POST";
-        }
-
-        const form = document.getElementById('leaveForm');
-        const formData = new FormData(form);
-
-        if (type === 'submit') {
-            formData.append('is_submitted', 1);
-        } else {
-            formData.append('is_saved', 1);
-        }
-
-        if (method === "PUT") {
-            formData.append('_method', 'PUT');
-        }
-
-        $.ajax({
-            url: url,
-            type: 'POST',
-            data: formData,
-            processData: false,
-            contentType: false,
-            dataType: 'json',
-            headers: {
-                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-            },
-            success: function (response) {
-                if (response.errors) {
-                    showErrors(response.errors);
-                } else {
-                    if (method === "POST") {
-                        $('#leaveForm')[0].reset();
-                    }
-                    clearErrors();
-                    toastr.success(response.message);
-                }
-            },
-            error: function (xhr) {
-                if (xhr.status === 422) {
-                    showErrors(xhr.responseJSON.errors);
-                } else {
-                    alert('An error occurred: ' + xhr.responseJSON.message);
-                }
-            }
-        });
-    }
-
-    document.getElementById('start_date').addEventListener('change', calculateDays);
-    document.getElementById('end_date').addEventListener('change', calculateDays);
-
-    function calculateDays() {
-        var startDate = new Date($('#start_date').val());
-        var endDate = new Date($('#end_date').val());
-        var timeDiff = Math.abs(endDate.getTime() - startDate.getTime());
-        var diffDays = Math.ceil(timeDiff / (1000 * 3600 * 24));
-        $('#no_of_days').val(diffDays);
-    }
-</script>

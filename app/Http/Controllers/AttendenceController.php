@@ -10,7 +10,7 @@ class AttendenceController extends Controller
 {
     public function index(Request $request)
     {
-        if($request->ajax()) {
+        if ($request->ajax()) {
             $type = $request->query('type', 'monthly');
             $attendence = Attendence::with('user:id,name')->select('id', 'day', 'date', 'type', 'punch_in', 'punch_out', 'hours', 'A_R', 'L_R', 'SHR_H', 'W_H');
             switch ($type) {
@@ -27,12 +27,6 @@ class AttendenceController extends Controller
                     break;
             }
             return DataTables::of($attendence)
-                ->addColumn('status', function ($row) {
-                    return $row->status ? '<span class="btn btn-primary btn-sm">Active</span>' : '<span class="btn btn-danger btn-sm">Inactive</span>';
-                })
-                ->addColumn('created_by', function ($row) {
-                    return $row->user ? $row->user->name : 'N/A';
-                })
                 ->addColumn('actions', function ($row) {
                     $btn = '<button class="btn btn-primary btn-sm" onclick="editLeave(' . $row->id . ')"><i class="ti ti-edit"></i></button>';
                     $btn .= '<form action="' . route('admin.leave.delete', $row->id) . '" method="POST" style="display:inline-block;">
@@ -47,5 +41,23 @@ class AttendenceController extends Controller
 
         }
         return view('admin.attendence.index');
+    }
+    public function edit($id)
+    {
+        $attendence = Attendence::select('id', 'day', 'date', 'type', 'punch_in', 'punch_out', 'hours', 'A_R', 'L_R', 'SHR_H', 'W_H')->find($id);
+
+        return response()->json(['success' => true, 'attendence' => $attendence], 200);
+    }
+
+    public function update(Request $request, $id)
+    {
+        try {
+            $attendence = Attendence::find($id);
+            $attendence->update($request->all());
+
+            return response()->json(['status' => true, 'message', 'Attendence updated successfully']);
+        } catch (\Exception $e) {
+            return response()->json(['status' => false, 'message', $e->getMessage()]);
+        }
     }
 }
