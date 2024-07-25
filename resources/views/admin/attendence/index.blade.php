@@ -46,10 +46,11 @@
                         <thead>
                             <tr>
                                 <th>ID</th>
-                                <th>Day</th>
                                 <th>Date</th>
-                                <th>Type</th>
+                                <th>Day</th>
                                 <th>Punch In</th>
+                                <th>Att. Marked</th>
+                                <th>Type</th>
                                 <th>Punch Out</th>
                                 <th>Hours</th>
                                 <th>A_R</th>
@@ -68,71 +69,180 @@
         @include('admin.partials.footer')
     </div>
 </div>
+@include('admin.attendence.modals.leave_request_modal')
+@include('admin.attendence.modals.attendence_regularisatioin_modal')
 @endsection
 
 @push('scripts')
-<script>
-    document.addEventListener('DOMContentLoaded', function () {
-        const tabs = document.querySelectorAll('.tab-btn');
-        const attendanceTable = $('#attendance-table').DataTable({
-            processing: true,
-            serverSide: true,
-            ajax: {
-                url: "{{ route('admin.attendence') }}",
-                data: function (d) {
-                    d.type = $('.tab-btn.active').data('tab');
-                }
-            },
-            columns: [
-                { data: 'id' ,  defaultContent: '--' },
-                { data: 'day' ,  defaultContent: '--' },
-                { data: 'date' ,  defaultContent: '--' },
-                { data: 'type' ,  defaultContent: '--' },
-                { data: 'punch_in' ,  defaultContent: '--' },
-                { data: 'punch_out' ,  defaultContent: '--' },
-                { data: 'hours' ,  defaultContent: '--' },
-                { data: 'A_R' ,  defaultContent: '--' },
-                { data: 'L_R' ,  defaultContent: '--' },
-                { data: 'SHR_H' ,  defaultContent: '--' },
-                { data: 'W_H' ,  defaultContent: '--' },
-                
-            ],
-            createdRow: function(row, data, dataIndex) {
-                $(row).find('td:eq(11)').html(data.status); // Render HTML for status column
-            }
-        });
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            const tabs = document.querySelectorAll('.tab-btn');
+            const attendanceTable = $('#attendance-table').DataTable({
+                processing: true,
+                serverSide: true,
+                ajax: {
+                    url: "{{ route('admin.attendence') }}",
+                    data: function (d) {
+                        d.type = $('.tab-btn.active').data('tab');
+                    }
+                },
+                columns: [
+                    { data: 'id', defaultContent: '--' },
+                    { data: 'date', defaultContent: '--' },
+                    { data: 'day', defaultContent: '--' },
+                    { data: 'punch_in', defaultContent: '--' },
+                    { data: 'attendence_marked', defaultContent: '--' },
+                    { data: 'type', defaultContent: '--' },
+                    { data: 'punch_out', defaultContent: '--' },
+                    { data: 'hours', defaultContent: '--' },
+                    {
+                        data: 'A_R',
+                        render: function (data, type, row) {
+                            return `<button onclick="openAttendenceModal(${row.id})" class="btn btn-primary btn-sm edit-btn">R</button>`;
+                        }
+                    },
+                    {
+                        data: 'L_R',
+                        render: function (data, type, row) {
+                            return `<button onclick="openLeaveRequestModal(${row.id})" class="btn btn-warning btn-sm edit-btn"><i class="fa fa-edit"></i></button>`;
+                        }
+                    },
+                    { data: 'SHR_H', defaultContent: '--' },
+                    { data: 'W_H', defaultContent: '--' },
 
-        tabs.forEach(tab => {
-            tab.addEventListener('click', function () {
-                tabs.forEach(t => t.classList.remove('active'));
-                this.classList.add('active');
-                loadAttendance(this.getAttribute('data-tab'));
+                ],
+                createdRow: function (row, data, dataIndex) {
+                    $(row).find('td:eq(11)').html(data.status);
+                }
+            });
+
+            tabs.forEach(tab => {
+                tab.addEventListener('click', function () {
+                    tabs.forEach(t => t.classList.remove('active'));
+                    this.classList.add('active');
+                    loadAttendance(this.getAttribute('data-tab'));
+                });
+            });
+
+            function loadAttendance(tab) {
+                attendanceTable.ajax.reload();
+            }
+
+            // Initial load
+            loadAttendance('monthly');
+
+            // Reload DataTable after form submission
+            $('#attendanceForm').on('submit', function (e) {
+                e.preventDefault();
+                $.ajax({
+                    url: $(this).attr('action'),
+                    method: $(this).attr('method'),
+                    data: $(this).serialize(),
+                    success: function (response) {
+                        $('#staticBackdrop').modal('hide');
+                        attendanceTable.ajax.reload(); // Reload DataTable
+                    },
+                    error: function (response) {
+                        // Handle errors here
+                    }
+                });
             });
         });
-
-        function loadAttendance(tab) {
-            attendanceTable.ajax.reload();
+        function openLeaveRequestModal(id) {
+            let url = "{{ route('admin.leave.edit', ':id') }}";
+            url = url.replace(':id', id);
+            $.ajax({
+                url: url,
+                type: "GET",
+                success: function (data) {
+                    if (data.leave) {
+                        populateForm(data.leave);
+                        $('#leaveRequest').modal('show');
+                    } else {
+                        toastr.error("Leave request not found");
+                    }
+                },
+                error: function (data) {
+                    console.log("Error:", data);
+                },
+            });
         }
 
-        // Initial load
-        loadAttendance('monthly');
+        function populateForm(data) {
+            $('#id').val(data.id);
+            $('#leave_type').val(data.leave_type);
+            $('#leave_balance').val(data.leave_balance);
+            $('#start_date').val(data.start_date);
+            $('#end_date').val(data.end_date);
+            $('#no_of_days').val(data.no_of_days);
+            $('#reason').val(data.reason);
+        }
+        document.getElementById('start_date').addEventListener('change', calculateDays);
+        document.getElementById('end_date').addEventListener('change', calculateDays);
 
-        // Reload DataTable after form submission
-        $('#attendanceForm').on('submit', function (e) {
-            e.preventDefault();
+        function calculateDays() {
+            var startDate = new Date($('#start_date').val());
+            var endDate = new Date($('#end_date').val());
+            var timeDiff = Math.abs(endDate.getTime() - startDate.getTime());
+            var diffDays = Math.ceil(timeDiff / (1000 * 3600 * 24));
+            $('#no_of_days').val(diffDays);
+        }
+        function openAttendenceModal(id) {
+            let url = "{{ route('admin.attendence.edit', ':id') }}";
+            url = url.replace(':id', id);
             $.ajax({
-                url: $(this).attr('action'),
-                method: $(this).attr('method'),
-                data: $(this).serialize(),
-                success: function (response) {
-                    $('#staticBackdrop').modal('hide');
-                    attendanceTable.ajax.reload(); // Reload DataTable
+                url: url,
+                type: "GET",
+                success: function (data) {
+                    if (data.attendence) {
+                        populateAttendenceForm(data.attendence);
+                        $('#attendenceRegularisation').modal('show');
+                    } else {
+                        toastr.error("Attendence not found");
+                    }
                 },
-                error: function (response) {
-                    // Handle errors here
-                }
+                error: function (data) {
+                    console.log("Error:", data);
+                },
             });
-        });
-    });
-</script>
+        }
+
+        function populateAttendenceForm(data) {
+            $('#id').val(data.id);
+            $('#punch_in').val(data.punch_in);
+            $('#punch_out').val(data.punch_out);
+            $('#reason').val(data.reason);
+            $('#attendance_date').text(data.date);
+            $('#attendance_day').text(data.day);
+            $('#attendance_marked_as').text(data.attendance_marked);
+            $('#working_hours').text(data.W_H);
+            $('#reporting_manager').text(data.reporting_manager);
+            $('#work_location').text(data.work_location);
+        }
+        function calculateWorkingHours() {
+            var punchIn = $('#punch_in').val();
+            var punchOut = $('#punch_out').val();
+
+            if (punchIn && punchOut) {
+                var punchInTime = new Date('1970-01-01T' + punchIn + 'Z');
+                var punchOutTime = new Date('1970-01-01T' + punchOut + 'Z');
+
+                var diff = punchOutTime - punchInTime; // difference in milliseconds
+
+                if (diff < 0) {
+                    // if punch-out is on the next day
+                    punchOutTime.setDate(punchOutTime.getDate() + 1);
+                    diff = punchOutTime - punchInTime;
+                }
+
+                var hours = Math.floor(diff / 1000 / 60 / 60);
+                var minutes = Math.floor((diff / 1000 / 60) % 60);
+
+                var formattedTime = ('0' + hours).slice(-2) + ':' + ('0' + minutes).slice(-2);
+
+                $('#working_hours').text(formattedTime);
+                $('#working_hours_input').val(formattedTime);
+            }
+        }
+    </script>
 @endpush

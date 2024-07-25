@@ -30,6 +30,8 @@ Route::group(['middleware' => 'auth'], function () {
         Route::post('/user-details/store', [UserDetailsController::class, 'store'])->name('user-details.store');
 
         Route::get('attendence', [AttendenceController::class, 'index'])->name('attendence');
+        Route::get('attendence/edit/{id}', [AttendenceController::class, 'edit'])->name('attendence.edit');
+        Route::put('/attendence/update', [AttendenceController::class, 'update'])->name('attendence.update');
 
         Route::get('leave', [LeaveController::class, 'index'])->name('leave');
         Route::post('/leave/store', [LeaveController::class, 'store'])->name('leave.store');
@@ -47,6 +49,7 @@ Route::group(['middleware' => 'auth'], function () {
         Route::get('delete-account', [SettingController::class, 'deleteAccount'])->name('delete-account');
 
         Route::get('help-and-support', [HelpAndSupportController::class, 'index'])->name('help-and-support');
+        Route::get('policy', [PolicyController::class, 'index'])->name('policy');
 
     });
 });
