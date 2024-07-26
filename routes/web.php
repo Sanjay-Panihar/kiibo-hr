@@ -31,7 +31,7 @@ Route::group(['middleware' => 'auth'], function () {
 
         Route::get('attendence', [AttendenceController::class, 'index'])->name('attendence');
         Route::get('attendence/edit/{id}', [AttendenceController::class, 'edit'])->name('attendence.edit');
-        Route::put('/attendence/update', [AttendenceController::class, 'update'])->name('attendence.update');
+        Route::post('/attendence/update/{id}', [AttendenceController::class, 'update'])->name('attendence.update');
 
         Route::get('leave', [LeaveController::class, 'index'])->name('leave');
         Route::post('/leave/store', [LeaveController::class, 'store'])->name('leave.store');

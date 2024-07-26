@@ -226,7 +226,7 @@
             if (punchIn && punchOut) {
                 var punchInTime = new Date('1970-01-01T' + punchIn + 'Z');
                 var punchOutTime = new Date('1970-01-01T' + punchOut + 'Z');
-
+console.log(punchInTime, punchOutTime);
                 var diff = punchOutTime - punchInTime; // difference in milliseconds
 
                 if (diff < 0) {
@@ -243,6 +243,44 @@
                 $('#working_hours').text(formattedTime);
                 $('#working_hours_input').val(formattedTime);
             }
+        }
+        function attendenceRequest() {
+            var id = $('#id').val();
+            if (id) {
+                url = "{{ route('admin.attendence.update', ':id') }}";
+                url = url.replace(':id', id);
+                method = "PUT";
+            }
+            const form = document.getElementById('attendenceForm');
+            const formData = new FormData(form);
+
+            $.ajax({
+                url: url,
+                type: 'POST',
+                data: formData,
+                processData: false,
+                contentType: false,
+                dataType: 'json',
+                headers: {
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                },
+                success: function (response) {
+                    if (response.errors) {
+                        showErrors(response.errors);
+                    } else {
+                        // $('#attendenceRegularisation').modal('hide');
+                        attendanceTable.ajax.reload();
+                        toastr.success(response.message);
+                    }
+                },
+                error: function (xhr) {
+                    if (xhr.status === 422) {
+                        showErrors(xhr.responseJSON.errors);
+                    } else {
+                        alert('An error occurred: ' + xhr.responseJSON.message);
+                    }
+                }
+            });
         }
     </script>
 @endpush

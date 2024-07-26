@@ -23,9 +23,6 @@
                     </div>
                 </div>
                 <hr>
-                <form id="leaveForm">
-                    @csrf
-                    <input type="hidden" id="id" name="id">
                     <div class="row mb-3">
                         <div class="col-md-6">
                             <span><strong>Regularise Type:</strong> <span id="regularise_type">Regularise Time</span></span>
@@ -34,6 +31,9 @@
                             <span><strong>Attendance Marked As:</strong> <span id="attendance_marked_as" class="badge bg-danger">LWA</span></span>
                         </div>
                     </div>
+                    <form id="attendenceForm">
+                    @csrf
+                    <input type="hidden" id="id" name="id">
                     <div class="row mb-3">
                         <div class="col-md-6">
                             <label for="punch_in" class="form-label">In Time <span class="text-danger">*</span></label>
@@ -63,7 +63,7 @@
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Cancel</button>
-                        <button type="button" class="btn btn-success" onclick="leaveRequest('save')">Save</button>
+                        <button type="button" class="btn btn-success" onclick="attendenceRequest()">Save</button>
                     </div>
                 </form>
             </div>

@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\Attendence;
 use Yajra\DataTables\DataTables;
+use Illuminate\Support\Facades\Validator;
 
 class AttendenceController extends Controller
 {
@@ -52,10 +53,21 @@ class AttendenceController extends Controller
     public function update(Request $request, $id)
     {
         try {
-            $attendence = Attendence::find($id);
-            $attendence->update($request->all());
+            $validator = Validator::make($request->all(), [
+                'punch_in' => 'required',
+                'punch_out' => 'required|after:punch_in',
+                'hours' => 'required',
+                'W_H' => 'required',
+            ]);
 
-            return response()->json(['status' => true, 'message', 'Attendence updated successfully']);
+            if ($validator->fails()) {
+                return response()->json(['status' => false, 'error' => $validator->errors()->all()]);
+            } else {
+                $attendence = Attendence::find($id);
+                $attendence->update($request->all());
+
+                return response()->json(['status' => true, 'message', 'Attendence updated successfully']);
+            }
         } catch (\Exception $e) {
             return response()->json(['status' => false, 'message', $e->getMessage()]);
         }
