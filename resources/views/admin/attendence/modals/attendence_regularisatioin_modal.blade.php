@@ -36,7 +36,6 @@
                 </div>
                 <form id="attendenceForm">
                     @csrf
-                    <input type="hidden" id="id" name="id">
                     <div class="row mb-3">
                         <div class="col-md-6">
                             <label for="punch_in" class="form-label">In Time <span class="text-danger">*</span></label>
@@ -60,6 +59,7 @@
                                     id="hours"><strong>00:00</strong></span></span>
                             <input type="hidden" id="hours_input" name="hours">
                             <span class="text-danger" id="hours_error"></span>
+                            <span class="text-muted">(HH:MM)</span>
                         </div>
                     </div>
                     <div class="row mb-3">
@@ -71,8 +71,8 @@
                         </div>
                     </div>
                     <div class="modal-footer">
-                        <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Cancel</button>
                         <button type="button" class="btn btn-success" onclick="attendenceRequest()">Save</button>
+                        <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Cancel</button>
                     </div>
                 </form>
 

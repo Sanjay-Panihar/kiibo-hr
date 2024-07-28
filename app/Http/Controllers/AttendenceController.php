@@ -28,6 +28,9 @@ class AttendenceController extends Controller
                     break;
             }
             return DataTables::of($attendence)
+                ->addColumn('type', function ($row) {
+                    return $row->leave_type_name; // Using the accessor method from the trait
+                })
                 ->addColumn('actions', function ($row) {
                     $btn = '<button class="btn btn-primary btn-sm" onclick="editLeave(' . $row->id . ')"><i class="ti ti-edit"></i></button>';
                     $btn .= '<form action="' . route('admin.leave.delete', $row->id) . '" method="POST" style="display:inline-block;">
@@ -51,26 +54,26 @@ class AttendenceController extends Controller
     }
 
     public function update(Request $request, $id)
-{
-    try {
-        $validator = Validator::make($request->all(), [
-            'punch_in'  => 'required|date_format:H:i:s',
-            'punch_out' => 'required|date_format:H:i:s|after:punch_in',
-            'hours'     => 'required',
-            'reason'    => 'required|string|max:255',
-        ]);
+    {
+        try {
+            $validator = Validator::make($request->all(), [
+                'punch_in' => 'required|date_format:H:i:s',
+                'punch_out' => 'required|date_format:H:i:s|after:punch_in',
+                'hours' => 'required',
+                'reason' => 'nullable|string|max:255',
+            ]);
 
-        if ($validator->fails()) {
-            return response()->json(['success' => false, 'errors' => $validator->errors()], 422);
-        } else {
-            $attendance = Attendence::find($id);
-            $attendance->update($request->all());
+            if ($validator->fails()) {
+                return response()->json(['success' => false, 'errors' => $validator->errors()], 422);
+            } else {
+                $attendance = Attendence::find($id);
+                $attendance->update($request->all());
 
-            return response()->json(['status' => true, 'message' => 'Attendance updated successfully'], 200);
+                return response()->json(['status' => true, 'message' => 'Attendance updated successfully'], 200);
+            }
+        } catch (\Exception $e) {
+            return response()->json(['status' => false, 'message' => $e->getMessage()], 500);
         }
-    } catch (\Exception $e) {
-        return response()->json(['status' => false, 'message' => $e->getMessage()], 500);
     }
-}
 
 }

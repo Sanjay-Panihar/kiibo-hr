@@ -263,15 +263,13 @@
                     'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
                 },
                 success: function (response) {
-                    console.log(response);
-                    console.log('hre');
                     if (response.status === false) {
-                        console.log(response.errors);
                         showErrors(response.errors);
+                        toastr.success(response.errors);
+
                     } else {
                         // $('#attendenceRegularisation').modal('hide');
                         reloadTable('attendance-table');
-                        clearErrors();
                         toastr.success(response.message);
                     }
                 },

@@ -35,6 +35,9 @@ class LeaveController extends Controller
                 ->addColumn('created_by', function ($row) {
                     return $row->user ? $row->user->name : 'N/A';
                 })
+                ->addColumn('leave_type', function ($row) {
+                    return $row->leave_type_name;
+                })
                 ->addColumn('actions', function ($row) {
                     $btn = '<button class="btn btn-primary btn-sm" onclick="editLeave(' . $row->id . ')"><i class="ti ti-edit"></i></button>';
                     $btn .= '<form action="' . route('admin.leave.delete', $row->id) . '" method="POST" style="display:inline-block;">
