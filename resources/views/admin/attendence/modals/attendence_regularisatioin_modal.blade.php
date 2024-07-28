@@ -33,7 +33,7 @@
                     </div>
                     <form id="attendenceForm">
                     @csrf
-                    <input type="hidden" id="id" name="id">
+                    <!-- <input type="hidden" id="id" name="id"> -->
                     <div class="row mb-3">
                         <div class="col-md-6">
                             <label for="punch_in" class="form-label">In Time <span class="text-danger">*</span></label>
@@ -50,14 +50,15 @@
                     </div>
                     <div class="row mb-3">
                         <div class="col-md-12">
-                            <span><strong>Working Hours:</strong> <span class="text-danger">*</span> <span id="working_hours"><strong>00:00</strong></span></span>
-                            <input type="hidden" id="working_hours_input" name="working_hours">
+                            <span><strong>Working Hours:</strong> <span class="text-danger">*</span> <span id="hours"><strong>00:00</strong></span></span>
+                            <input type="hidden" id="hours_input" name="hours">
+                            <span class="text-danger" id="hours_error"></span>
                         </div>
                     </div>
                     <div class="row mb-3">
                         <div class="col-md-12">
                             <label for="reason" class="form-label">Reason <span class="text-danger">*</span></label>
-                            <textarea class="form-control" id="reason" name="reason" placeholder="Provide a brief reason for your leave"></textarea>
+                            <!-- <textarea class="form-control" id="reason" name="reason" placeholder="Provide a brief reason for your leave"></textarea> -->
                             <span class="text-danger" id="reason_error"></span>
                         </div>
                     </div>

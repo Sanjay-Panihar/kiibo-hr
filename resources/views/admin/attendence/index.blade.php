@@ -215,9 +215,9 @@
             $('#attendance_date').text(data.date);
             $('#attendance_day').text(data.day);
             $('#attendance_marked_as').text(data.attendance_marked);
-            $('#working_hours').text(data.W_H);
             $('#reporting_manager').text(data.reporting_manager);
             $('#work_location').text(data.work_location);
+            calculateWorkingHours();
         }
         function calculateWorkingHours() {
             var punchIn = $('#punch_in').val();
@@ -226,7 +226,6 @@
             if (punchIn && punchOut) {
                 var punchInTime = new Date('1970-01-01T' + punchIn + 'Z');
                 var punchOutTime = new Date('1970-01-01T' + punchOut + 'Z');
-console.log(punchInTime, punchOutTime);
                 var diff = punchOutTime - punchInTime; // difference in milliseconds
 
                 if (diff < 0) {
@@ -240,16 +239,16 @@ console.log(punchInTime, punchOutTime);
 
                 var formattedTime = ('0' + hours).slice(-2) + ':' + ('0' + minutes).slice(-2);
 
-                $('#working_hours').text(formattedTime);
-                $('#working_hours_input').val(formattedTime);
+                $('#hours').text(formattedTime);
+                $('#hours_input').val(formattedTime);
             }
         }
         function attendenceRequest() {
             var id = $('#id').val();
+            console.log(id);
             if (id) {
                 url = "{{ route('admin.attendence.update', ':id') }}";
                 url = url.replace(':id', id);
-                method = "PUT";
             }
             const form = document.getElementById('attendenceForm');
             const formData = new FormData(form);
@@ -265,15 +264,16 @@ console.log(punchInTime, punchOutTime);
                     'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
                 },
                 success: function (response) {
-                    if (response.errors) {
-                        showErrors(response.errors);
+                    if (response.status === false) {
+                        showErrors(response.error);
                     } else {
                         // $('#attendenceRegularisation').modal('hide');
-                        attendanceTable.ajax.reload();
+                        reloadTable('attendance-table');
                         toastr.success(response.message);
                     }
                 },
                 error: function (xhr) {
+                    console.log(xhr);
                     if (xhr.status === 422) {
                         showErrors(xhr.responseJSON.errors);
                     } else {

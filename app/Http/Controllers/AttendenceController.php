@@ -45,31 +45,31 @@ class AttendenceController extends Controller
     }
     public function edit($id)
     {
-        $attendence = Attendence::select('id', 'day', 'date', 'type', 'punch_in', 'punch_out', 'hours', 'A_R', 'L_R', 'SHR_H', 'W_H')->find($id);
+        $attendence = Attendence::select('id', 'day', 'date', 'type', 'punch_in', 'punch_out', 'hours')->find($id);
 
         return response()->json(['success' => true, 'attendence' => $attendence], 200);
     }
 
     public function update(Request $request, $id)
-    {
-        try {
-            $validator = Validator::make($request->all(), [
-                'punch_in' => 'required',
-                'punch_out' => 'required|after:punch_in',
-                'hours' => 'required',
-                'W_H' => 'required',
-            ]);
+{
+    try {
+        $validator = Validator::make($request->all(), [
+            'punch_in'  => 'required|date_format:H:i:s',
+            'punch_out' => 'required|date_format:H:i:s|after:punch_in',
+            'hours'     => 'required',
+        ]);
 
-            if ($validator->fails()) {
-                return response()->json(['status' => false, 'error' => $validator->errors()->all()]);
-            } else {
-                $attendence = Attendence::find($id);
-                $attendence->update($request->all());
+        if ($validator->fails()) {
+            return response()->json(['success' => false, 'errors' => $validator->errors()], 422);
+        } else {
+            $attendance = Attendence::find($id);
+            $attendance->update($request->all());
 
-                return response()->json(['status' => true, 'message', 'Attendence updated successfully']);
-            }
-        } catch (\Exception $e) {
-            return response()->json(['status' => false, 'message', $e->getMessage()]);
+            return response()->json(['status' => true, 'message' => 'Attendance updated successfully'], 200);
         }
+    } catch (\Exception $e) {
+        return response()->json(['status' => false, 'message' => $e->getMessage()], 500);
     }
+}
+
 }
