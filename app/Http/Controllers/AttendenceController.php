@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\Attendence;
 use Yajra\DataTables\DataTables;
+use Illuminate\Support\Facades\Validator;
 
 class AttendenceController extends Controller
 {
@@ -27,6 +28,9 @@ class AttendenceController extends Controller
                     break;
             }
             return DataTables::of($attendence)
+                ->addColumn('type', function ($row) {
+                    return $row->leave_type_name; // Using the accessor method from the trait
+                })
                 ->addColumn('actions', function ($row) {
                     $btn = '<button class="btn btn-primary btn-sm" onclick="editLeave(' . $row->id . ')"><i class="ti ti-edit"></i></button>';
                     $btn .= '<form action="' . route('admin.leave.delete', $row->id) . '" method="POST" style="display:inline-block;">
@@ -44,7 +48,7 @@ class AttendenceController extends Controller
     }
     public function edit($id)
     {
-        $attendence = Attendence::select('id', 'day', 'date', 'type', 'punch_in', 'punch_out', 'hours', 'A_R', 'L_R', 'SHR_H', 'W_H')->find($id);
+        $attendence = Attendence::select('id', 'day', 'date', 'type', 'punch_in', 'punch_out', 'hours', 'reason')->find($id);
 
         return response()->json(['success' => true, 'attendence' => $attendence], 200);
     }
@@ -52,12 +56,24 @@ class AttendenceController extends Controller
     public function update(Request $request, $id)
     {
         try {
-            $attendence = Attendence::find($id);
-            $attendence->update($request->all());
+            $validator = Validator::make($request->all(), [
+                'punch_in' => 'required|date_format:H:i:s',
+                'punch_out' => 'required|date_format:H:i:s|after:punch_in',
+                'hours' => 'required',
+                'reason' => 'nullable|string|max:255',
+            ]);
 
-            return response()->json(['status' => true, 'message', 'Attendence updated successfully']);
+            if ($validator->fails()) {
+                return response()->json(['success' => false, 'errors' => $validator->errors()], 422);
+            } else {
+                $attendance = Attendence::find($id);
+                $attendance->update($request->all());
+
+                return response()->json(['status' => true, 'message' => 'Attendance updated successfully'], 200);
+            }
         } catch (\Exception $e) {
-            return response()->json(['status' => false, 'message', $e->getMessage()]);
+            return response()->json(['status' => false, 'message' => $e->getMessage()], 500);
         }
     }
+
 }

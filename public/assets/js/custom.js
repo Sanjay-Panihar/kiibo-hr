@@ -50,3 +50,7 @@ function showErrors(errors) {
 function clearErrors() {
     $('.text-danger').text('');
 }
+function reloadTable(table) {
+var table = $('#' + table).DataTable();
+table.ajax.reload(null, false);
+}

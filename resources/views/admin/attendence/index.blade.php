@@ -98,7 +98,7 @@
                     {
                         data: 'A_R',
                         render: function (data, type, row) {
-                            return `<button onclick="openAttendenceModal(${row.id})" class="btn btn-primary btn-sm edit-btn">R</button>`;
+                            return `<button onclick="openAttendenceModal(${row.id})" class="btn btn-primary btn-sm edit-btn"><i class="ti ti-letter-r"></i></button>`;
                         }
                     },
                     {
@@ -215,9 +215,9 @@
             $('#attendance_date').text(data.date);
             $('#attendance_day').text(data.day);
             $('#attendance_marked_as').text(data.attendance_marked);
-            $('#working_hours').text(data.W_H);
             $('#reporting_manager').text(data.reporting_manager);
             $('#work_location').text(data.work_location);
+            calculateWorkingHours();
         }
         function calculateWorkingHours() {
             var punchIn = $('#punch_in').val();
@@ -226,7 +226,6 @@
             if (punchIn && punchOut) {
                 var punchInTime = new Date('1970-01-01T' + punchIn + 'Z');
                 var punchOutTime = new Date('1970-01-01T' + punchOut + 'Z');
-
                 var diff = punchOutTime - punchInTime; // difference in milliseconds
 
                 if (diff < 0) {
@@ -240,9 +239,49 @@
 
                 var formattedTime = ('0' + hours).slice(-2) + ':' + ('0' + minutes).slice(-2);
 
-                $('#working_hours').text(formattedTime);
-                $('#working_hours_input').val(formattedTime);
+                $('#hours').text(formattedTime);
+                $('#hours_input').val(formattedTime);
             }
+        }
+        function attendenceRequest() {
+            var id = $('#id').val();
+            if (id) {
+                url = "{{ route('admin.attendence.update', ':id') }}";
+                url = url.replace(':id', id);
+            }
+            const form = document.getElementById('attendenceForm');
+            const formData = new FormData(form);
+
+            $.ajax({
+                url: url,
+                type: 'POST',
+                data: formData,
+                processData: false,
+                contentType: false,
+                dataType: 'json',
+                headers: {
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                },
+                success: function (response) {
+                    if (response.status === false) {
+                        showErrors(response.errors);
+                        toastr.success(response.errors);
+
+                    } else {
+                        // $('#attendenceRegularisation').modal('hide');
+                        reloadTable('attendance-table');
+                        toastr.success(response.message);
+                    }
+                },
+                error: function (xhr) {
+                    console.log(xhr.responseJSON);
+                    if (xhr.status === 422) {
+                        showErrors(xhr.responseJSON.errors);
+                    } else {
+                        toastr.error('An error occurred: ' + xhr.responseJSON.message);
+                    }
+                }
+            });
         }
     </script>
 @endpush
