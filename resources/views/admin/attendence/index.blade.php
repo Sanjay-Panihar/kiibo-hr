@@ -20,18 +20,32 @@
                 </div>
                 <div class="row mt-3">
                     <div class="col-md-3">
-                        <div class=" justify-content-between align-items-center mb-2">
+                        <div class="justify-content-between align-items-center mb-2">
                             <p><strong>Employee Name:</strong> <span>{{ Auth::user()->name ?? '' }}</span></p>
                         </div>
                     </div>
                     <div class="col-md-3">
-                        <div class=" justify-content-between align-items-center mb-2">
+                        <div class="justify-content-between align-items-center mb-2">
                             <p><strong>Employee Code:</strong> <span>EMP-045DB</span></p>
                         </div>
                     </div>
                     <div class="col-md-3">
-                        <div class=" justify-content-between align-items-center mb-2">
-                            <p><strong>Month:</strong> <span>{{ date('F Y') }}</span></p>
+                        <div class="d-flex justify-content-between align-items-center mb-2">
+                            <?php
+                                $currentYear = date('Y');
+                                $currentMonth = date('F Y');
+                                $months = [];
+                                for ($i = 1; $i <= 12; $i++) {
+                                    $timestamp = mktime(0, 0, 0, $i, 1, $currentYear);
+                                    $months[] = date('F Y', $timestamp);
+                                }
+                            ?>
+                            <p class="mb-0"><strong>Month:</strong></p>
+                            <select id="month-dropdown" name="month-dropdown" class="form-select ms-2">
+                                <?php foreach ($months as $month): ?>
+                                <option value="<?= $month ?>" <?= $month == $currentMonth ? 'selected' : '' ?>><?= $month ?></option>
+                                <?php endforeach; ?>
+                            </select>
                         </div>
                     </div>
                 </div>
@@ -104,7 +118,7 @@
                     {
                         data: 'L_R',
                         render: function (data, type, row) {
-                            return `<button onclick="openLeaveRequestModal(${row.id})" class="btn btn-warning btn-sm edit-btn"><i class="fa fa-edit"></i></button>`;
+                            return `<button onclick="openLeaveRequestModal('${row.date}')" class="btn btn-warning btn-sm edit-btn"><i class="fa fa-edit"></i></button>`;
                         }
                     },
                     { data: 'SHR_H', defaultContent: '--' },
@@ -148,35 +162,52 @@
                 });
             });
         });
-        function openLeaveRequestModal(id) {
-            let url = "{{ route('admin.leave.edit', ':id') }}";
-            url = url.replace(':id', id);
-            $.ajax({
-                url: url,
-                type: "GET",
-                success: function (data) {
-                    if (data.leave) {
-                        populateForm(data.leave);
-                        $('#leaveRequest').modal('show');
-                    } else {
-                        toastr.error("Leave request not found");
+        function openLeaveRequestModal(date) {
+            $('#start_date, #end_date').val(date);
+            calculateDays();
+            $('#leaveRequest').modal('show');
+        }
+        function leaveRequest(type){
+            url = "{{ route('admin.leave.store') }}";
+            method = "POST";
+            const form = document.getElementById('leaveForm');
+            const formData = new FormData(form);
+            if (type === 'submit') {
+            formData.append('is_submitted', 1);
+        } else {
+            formData.append('is_saved', 1);
+        }
+        $.ajax({
+            url: url,
+            type: 'POST',
+            data: formData,
+            processData: false,
+            contentType: false,
+            dataType: 'json',
+            headers: {
+                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+            },
+            success: function (response) {
+                if (response.errors) {
+                    showErrors(response.errors);
+                } else {
+                    if (method === "POST") {
+                        $('#leaveForm')[0].reset();
                     }
-                },
-                error: function (data) {
-                    console.log("Error:", data);
-                },
-            });
+                    clearErrors();
+                    toastr.success(response.message);
+                }
+            },
+            error: function (xhr) {
+                if (xhr.status === 422) {
+                    showErrors(xhr.responseJSON.errors);
+                } else {
+                    alert('An error occurred: ' + xhr.responseJSON.message);
+                }
+            }
+        });
         }
 
-        function populateForm(data) {
-            $('#id').val(data.id);
-            $('#leave_type').val(data.leave_type);
-            $('#leave_balance').val(data.leave_balance);
-            $('#start_date').val(data.start_date);
-            $('#end_date').val(data.end_date);
-            $('#no_of_days').val(data.no_of_days);
-            $('#reason').val(data.reason);
-        }
         document.getElementById('start_date').addEventListener('change', calculateDays);
         document.getElementById('end_date').addEventListener('change', calculateDays);
 

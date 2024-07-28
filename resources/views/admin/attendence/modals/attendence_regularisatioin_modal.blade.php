@@ -59,7 +59,7 @@
                                     id="hours"><strong>00:00</strong></span></span>
                             <input type="hidden" id="hours_input" name="hours">
                             <span class="text-danger" id="hours_error"></span>
-                            <span class="text-muted">(HH:MM)</span>
+                            <span class="text-muted">(Hours)</span>
                         </div>
                     </div>
                     <div class="row mb-3">
@@ -75,7 +75,6 @@
                         <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Cancel</button>
                     </div>
                 </form>
-
             </div>
         </div>
     </div>

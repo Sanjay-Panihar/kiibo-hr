@@ -17,7 +17,7 @@ trait LeaveTypeTrait{
         ];
         $leaveType = $this->leave_type ?? $this->type ?? null;
         
-        return isset($types[$leaveType]) ? $types[$leaveType] : 'Unknown';
+        return isset($types[$leaveType]) ? $types[$leaveType] : '';
 
     }
 }

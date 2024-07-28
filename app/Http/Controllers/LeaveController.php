@@ -68,7 +68,7 @@ class LeaveController extends Controller
             $data = $request->all();
             $id = $data['id'] ?? 0;
             $validator = Validator::make($data, [
-                'start_date'    => 'required|date|after:yesterday',
+                'start_date'    => 'required|date',
                 'end_date'      => 'required|date|after:start_date',
                 'reason'        => 'required|max:255|string',
                 'no_of_days'    => 'required|numeric',
