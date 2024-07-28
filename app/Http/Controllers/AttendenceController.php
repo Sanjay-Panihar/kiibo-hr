@@ -45,7 +45,7 @@ class AttendenceController extends Controller
     }
     public function edit($id)
     {
-        $attendence = Attendence::select('id', 'day', 'date', 'type', 'punch_in', 'punch_out', 'hours')->find($id);
+        $attendence = Attendence::select('id', 'day', 'date', 'type', 'punch_in', 'punch_out', 'hours', 'reason')->find($id);
 
         return response()->json(['success' => true, 'attendence' => $attendence], 200);
     }
@@ -57,6 +57,7 @@ class AttendenceController extends Controller
             'punch_in'  => 'required|date_format:H:i:s',
             'punch_out' => 'required|date_format:H:i:s|after:punch_in',
             'hours'     => 'required',
+            'reason'    => 'required|string|max:255',
         ]);
 
         if ($validator->fails()) {

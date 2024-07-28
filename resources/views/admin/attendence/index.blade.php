@@ -98,7 +98,7 @@
                     {
                         data: 'A_R',
                         render: function (data, type, row) {
-                            return `<button onclick="openAttendenceModal(${row.id})" class="btn btn-primary btn-sm edit-btn">R</button>`;
+                            return `<button onclick="openAttendenceModal(${row.id})" class="btn btn-primary btn-sm edit-btn"><i class="ti ti-letter-r"></i></button>`;
                         }
                     },
                     {
@@ -245,7 +245,6 @@
         }
         function attendenceRequest() {
             var id = $('#id').val();
-            console.log(id);
             if (id) {
                 url = "{{ route('admin.attendence.update', ':id') }}";
                 url = url.replace(':id', id);
@@ -264,20 +263,24 @@
                     'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
                 },
                 success: function (response) {
+                    console.log(response);
+                    console.log('hre');
                     if (response.status === false) {
-                        showErrors(response.error);
+                        console.log(response.errors);
+                        showErrors(response.errors);
                     } else {
                         // $('#attendenceRegularisation').modal('hide');
                         reloadTable('attendance-table');
+                        clearErrors();
                         toastr.success(response.message);
                     }
                 },
                 error: function (xhr) {
-                    console.log(xhr);
+                    console.log(xhr.responseJSON);
                     if (xhr.status === 422) {
                         showErrors(xhr.responseJSON.errors);
                     } else {
-                        alert('An error occurred: ' + xhr.responseJSON.message);
+                        toastr.error('An error occurred: ' + xhr.responseJSON.message);
                     }
                 }
             });
