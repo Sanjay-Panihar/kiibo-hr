@@ -215,7 +215,7 @@
             var startDate = new Date($('#start_date').val());
             var endDate = new Date($('#end_date').val());
             var timeDiff = Math.abs(endDate.getTime() - startDate.getTime());
-            var diffDays = Math.ceil(timeDiff / (1000 * 3600 * 24));
+            var diffDays = Math.ceil(timeDiff / (1000 * 3600 * 24)) + 1;
             $('#no_of_days').val(diffDays);
         }
         function openAttendenceModal(id) {
