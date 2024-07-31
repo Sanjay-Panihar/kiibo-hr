@@ -39,6 +39,8 @@ Route::group(['middleware' => 'auth'], function () {
         Route::get('/leave/edit/{id}', [LeaveController::class, 'edit'])->name('leave.edit');
         Route::delete('/leave/delete/{id}', [LeaveController::class, 'delete'])->name('leave.delete');
 
+        Route::get('timesheet', [TimesheetController::class, 'index'])->name('timesheet');
+
         Route::get('/event', [EventController::class, 'index'])->name('event');
         Route::get('/edit/{id}', [EventController::class, 'edit'])->name('event.edit');
         Route::delete('/delete/{id}', [EventController::class, 'delete'])->name('event.delete');
