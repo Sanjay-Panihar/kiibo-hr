@@ -90,69 +90,47 @@
     <script>
         document.addEventListener('DOMContentLoaded', function () {
             const tabs = document.querySelectorAll('.tab-btn');
-            const timesheetTable = $('#timesheet-table').DataTable({
-                processing: true,
-                serverSide: true,
-                ajax: {
-                    url: "{{ route('admin.timesheet') }}",
-                    data: function (d) {
-                        d.type = $('.tab-btn.active').data('tab');
-                    }
-                },
-                columns: [
-                    { data: 'id', defaultContent: '--' },
-                    { data: 'date', defaultContent: '--' },
-                    { data: 'day', defaultContent: '--' },
-                    { data: 'punch_in', defaultContent: '--' },
-                    { data: 'attendence_marked', defaultContent: '--' },
-                    { data: 'type', defaultContent: '--' },
-                    { data: 'punch_out', defaultContent: '--' },
-                    { data: 'hours', defaultContent: '--' },
-                    { data: 'SHR_H', defaultContent: '--' },
-                    { data: 'W_H', defaultContent: '--' },
-
-                ],
-                createdRow: function (row, data, dataIndex) {
-                    $(row).find('td:eq(11)').html(data.status);
-                }
-            });
-
             tabs.forEach(tab => {
                 tab.addEventListener('click', function () {
                     tabs.forEach(t => t.classList.remove('active'));
                     this.classList.add('active');
-                    loadAttendance(this.getAttribute('data-tab'));
+                    loadTimesheet(this.getAttribute('data-tab'));
                 });
             });
 
-            function loadAttendance(tab) {
+            function loadTimesheet(tab) {
                 timesheetTable.ajax.reload();
             }
 
             // Initial load
-            loadAttendance('monthly');
+            // loadTimesheet('monthly');
 
             // Reload DataTable after form submission
-            $('#attendanceForm').on('submit', function (e) {
-                e.preventDefault();
-                $.ajax({
-                    url: $(this).attr('action'),
-                    method: $(this).attr('method'),
-                    data: $(this).serialize(),
-                    success: function (response) {
-                        $('#staticBackdrop').modal('hide');
-                        attendanceTable.ajax.reload(); // Reload DataTable
-                    },
-                    error: function (response) {
-                        // Handle errors here
-                    }
-                });
-            });
         });
-        function openAddModal()
-        {
+        function openAddModal(){
             $('#timesheetModal').modal('show');
         }
-       
+       function submitTimesheet(formType){
+           $.ajax({
+               url: '{{ route('admin.timesheet.store') }}',
+               type: 'POST',
+               dataType: 'json',    
+               headers: {
+                   'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+               },
+               data: $('#'+formType).serialize(),
+               success: function(response) {
+                   if (response.success) {
+                       $('#timesheetModal').modal('hide');
+                       timesheetTable.ajax.reload();
+                   }
+               },
+               error: function(xhr) {
+                showErrors(xhr.responseJSON.errors);
+                   console.log(xhr.responseText);
+                   
+               }
+           });
+        }
     </script>
 @endpush

@@ -40,6 +40,7 @@ Route::group(['middleware' => 'auth'], function () {
         Route::delete('/leave/delete/{id}', [LeaveController::class, 'delete'])->name('leave.delete');
 
         Route::get('timesheet', [TimesheetController::class, 'index'])->name('timesheet');
+        Route::post('timesheet/store', [TimesheetController::class, 'store'])->name('timesheet.store');
 
         Route::get('my-team', [MyTeamController::class, 'index'])->name('myteam');
 
