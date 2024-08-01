@@ -1,13 +1,13 @@
-document.addEventListener('DOMContentLoaded', function() {
+document.addEventListener('DOMContentLoaded', function () {
     const sidebarItems = document.querySelectorAll('.sidebar-item');
-    
+
     sidebarItems.forEach(item => {
         const link = item.querySelector('.sidebar-link');
         const submenu = item.querySelector('.sidebar-submenu');
         const chevron = item.querySelector('.chevron i');
 
         if (link && submenu && chevron) {
-            link.addEventListener('click', function(e) {
+            link.addEventListener('click', function (e) {
                 e.preventDefault();
 
                 // Toggle submenu visibility
@@ -51,6 +51,6 @@ function clearErrors() {
     $('.text-danger').text('');
 }
 function reloadTable(table) {
-var table = $('#' + table).DataTable();
-table.ajax.reload(null, false);
+    var table = $('#' + table).DataTable();
+    table.ajax.reload(null, false);
 }

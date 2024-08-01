@@ -11,7 +11,7 @@
         <div class="col-md-6">
             <label for="duration" class="form-label">Select Duration</label>
             <select class="form-select" id="duration" name="duration">
-                <option value="0">Select Duration</option>
+                <option value="">Select Duration</option>
                 {!! \App\Helpers\Helper::generateTimeOptions() !!}
 
             </select>
