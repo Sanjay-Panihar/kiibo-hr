@@ -25,6 +25,37 @@
             <span class="hide-menu">Dashboard</span>
           </a>
         </li>
+        <li class="sidebar-item">
+          <a class="sidebar-link" href="javascript:void(0)" aria-expanded="false" id="user-management-menu">
+            <span>
+              <i class="ti ti-user"></i>
+            </span>
+            <span class="hide-menu">User Management</span>
+            <span class="chevron">
+              <i class="ti ti-chevron-down"></i>
+            </span>
+          </a>
+          <ul class="sidebar-submenu" id="user-management-submenu" style="display: none;">
+            <li class="sidebar-subitem">
+              <a class="sidebar-sublink" href="{{ route('admin.users.index') }}">
+                <i class="ti ti-user"></i>
+                <span>Users</span>
+              </a>
+            </li>
+            <li class="sidebar-subitem">
+              <a class="sidebar-sublink" href="">
+                <i class="ti ti-key"></i>
+                <span>Roles</span>
+              </a>
+            </li>
+            <li class="sidebar-subitem">
+              <a class="sidebar-sublink" href="">
+                <i class="ti ti-lock"></i>
+                <span>Permissions</span>
+              </a>
+            </li>
+          </ul>
+        </li>
         <li class="nav-small-cap">
           <i class="ti ti-dots nav-small-cap-icon fs-4"></i>
           <span class="hide-menu">COMPONENTS</span>

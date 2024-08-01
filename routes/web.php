@@ -56,5 +56,7 @@ Route::group(['middleware' => 'auth'], function () {
         Route::get('help-and-support', [HelpAndSupportController::class, 'index'])->name('help-and-support');
         Route::get('policy', [PolicyController::class, 'index'])->name('policy');
 
+        Route::resource('users', UserController::class);
+
     });
 });
