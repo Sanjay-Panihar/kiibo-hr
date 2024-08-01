@@ -122,7 +122,8 @@
                success: function(response) {
                    if (response.success) {
                        $('#timesheetModal').modal('hide');
-                       timesheetTable.ajax.reload();
+                       toastr.success(response.message);
+                    //    timesheetTable.ajax.reload();
                    }
                },
                error: function(xhr) {

@@ -22,7 +22,7 @@ class TimesheetController extends Controller
                 'client'         => 'nullable|string|max:50',
                 'project'        => 'nullable|string|max:50',
                 'task'           => 'nullable|string|max:50',
-                'billing_method' => 'required|in:1,2,3',
+                'billing_method' => 'required_if:type,1|in:1,2,3',
                 'description'    => 'nullable|string|max:255',
                 'leave_type'     => 'nullable|in:1,2,3,4,5,6,7',
                 'type'           => 'required|in:1,2,3',

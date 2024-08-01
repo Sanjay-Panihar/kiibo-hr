@@ -46,6 +46,9 @@
             <label for="billing_method" class="form-label">Select Billing Method</label>
             <select class="form-select" id="billing_method" name="billing_method">
                 <option>Select Billing Method</option>
+                <option value="1">Billing</option>
+                <option value="2">Non-Billing</option>
+                <option value="3">Mockup</option>
             </select>
             <span class="text-danger" id="billing_method_error"></span>
         </div>
