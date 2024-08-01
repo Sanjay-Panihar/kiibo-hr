@@ -15,7 +15,8 @@
                         <h3>Timesheet</h3>
                     </div>
                     <div class="col-md-6 text-end">
-                        <button type="button" class="btn btn-primary" onclick="openAddModal()"><i class="ti ti-plus"></i> Add Timesheet</button>
+                        <button type="button" class="btn btn-primary" onclick="openAddModal()"><i
+                                class="ti ti-plus"></i> Add Timesheet</button>
                     </div>
                 </div>
                 <div class="row mt-3">
@@ -32,18 +33,19 @@
                     <div class="col-md-3">
                         <div class="d-flex justify-content-between align-items-center mb-2">
                             <?php
-                                $currentYear = date('Y');
-                                $currentMonth = date('F Y');
-                                $months = [];
-                                for ($i = 1; $i <= 12; $i++) {
-                                    $timestamp = mktime(0, 0, 0, $i, 1, $currentYear);
-                                    $months[] = date('F Y', $timestamp);
-                                }
+$currentYear = date('Y');
+$currentMonth = date('F Y');
+$months = [];
+for ($i = 1; $i <= 12; $i++) {
+    $timestamp = mktime(0, 0, 0, $i, 1, $currentYear);
+    $months[] = date('F Y', $timestamp);
+}
                             ?>
                             <p class="mb-0"><strong>Month:</strong></p>
                             <select id="month-dropdown" name="month-dropdown" class="form-select ms-2">
                                 <?php foreach ($months as $month): ?>
-                                <option value="<?= $month ?>" <?= $month == $currentMonth ? 'selected' : '' ?>><?= $month ?></option>
+                                <option value="<?= $month ?>" <?= $month == $currentMonth ? 'selected' : '' ?>>
+                                    <?= $month ?></option>
                                 <?php endforeach; ?>
                             </select>
                         </div>
@@ -107,31 +109,41 @@
 
             // Reload DataTable after form submission
         });
-        function openAddModal(){
+        function openAddModal() {
+            clearErrors();
+            $('#timesheetModal').find('form').trigger('reset');
             $('#timesheetModal').modal('show');
         }
-       function submitTimesheet(formType){
-           $.ajax({
-               url: '{{ route('admin.timesheet.store') }}',
-               type: 'POST',
-               dataType: 'json',    
-               headers: {
-                   'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-               },
-               data: $('#'+formType).serialize(),
-               success: function(response) {
-                   if (response.success) {
-                       $('#timesheetModal').modal('hide');
-                       toastr.success(response.message);
-                    //    timesheetTable.ajax.reload();
-                   }
-               },
-               error: function(xhr) {
-                showErrors(xhr.responseJSON.errors);
-                   console.log(xhr.responseText);
-                   
-               }
-           });
+        function submitTimesheet(formType) {
+            $.ajax({
+                url: '{{ route('admin.timesheet.store') }}',
+                type: 'POST',
+                dataType: 'json',
+                headers: {
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                },
+                data: $('#' + formType).serialize(),
+                success: function (response) {
+                    if (response.success) {
+                        $('#timesheetModal').modal('hide');
+                        toastr.success(response.message);
+                        //    timesheetTable.ajax.reload();
+                    }
+                },
+                error: function (xhr) {
+                    showErrors(xhr.responseJSON.errors, formType);
+                    console.log(xhr.responseText);
+
+                }
+            });
         }
+        function showErrors(errors, formType) {
+            $('#' + formType + ' .text-danger').text('');
+            $.each(errors, function (field, messages) {
+                var errorSpan = $('#' + formType + ' [name="' + field + '"]').siblings('.text-danger');
+                errorSpan.text(messages[0]);
+            });
+        }
+
     </script>
 @endpush
