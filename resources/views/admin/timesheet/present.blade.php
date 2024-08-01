@@ -1,11 +1,12 @@
-<form id="leaveForm">
+<form id="present-form">
     @csrf
     <input type="hidden" id="id" name="id">
+    <input type="hidden" name="type" value="1">
     <div class="row mb-3">
         <div class="col-md-6">
-            <label for="start_date" class="form-label">Select Date</label>
-            <input type="date" class="form-control" id="start_date" name="start_date" min="{{ date('Y-m-d') }}">
-            <span class="text-danger" id="start_date_error"></span>
+            <label for="date" class="form-label">Select Date</label>
+            <input type="date" class="form-control" id="date" name="date" min="{{ date('Y-m-d') }}">
+            <span class="text-danger" id="date_error"></span>
         </div>
         <div class="col-md-6">
             <label for="duration" class="form-label">Select Duration</label>
@@ -42,11 +43,14 @@
             <span class="text-danger" id="task_error"></span>
         </div>
         <div class="col-md-6">
-            <label for="end_date" class="form-label">Select Billing Method</label>
+            <label for="billing_method" class="form-label">Select Billing Method</label>
             <select class="form-select" id="billing_method" name="billing_method">
                 <option>Select Billing Method</option>
+                <option value="1">Billing</option>
+                <option value="2">Non-Billing</option>
+                <option value="3">Mockup</option>
             </select>
-            <span class="text-danger" id="end_date_error"></span>
+            <span class="text-danger" id="billing_method_error"></span>
         </div>
     </div>
 
@@ -60,6 +64,6 @@
     </div>
     <div class="modal-footer">
         <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Cancel</button>
-        <button type="button" class="btn btn-primary" onclick="submitTimesheet()">Submit</button>
+        <button type="button" class="btn btn-primary" onclick="submitTimesheet('present-form')">Submit</button>
     </div>
 </form>
