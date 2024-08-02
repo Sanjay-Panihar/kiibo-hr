@@ -20,7 +20,7 @@ return new class extends Migration
             $table->string('type', 255)->nullable();
             $table->time('punch_out')->nullable();
             $table->time('hours')->nullable();
-            $table->integer('A_R')->nullable()->default('R')->comment('Attendence Regularisation');
+            $table->integer('A_R')->nullable()->default(0)->comment('Attendence Regularisation');
             $table->integer('L_R')->nullable()->comment('Leave Regularisation');
             $table->integer('SHR_H')->nullable()->comment('Short Hours');
             $table->integer('W_H')->nullable()->comment('Worked Hours');
