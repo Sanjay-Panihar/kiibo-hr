@@ -25,31 +25,35 @@
             <span class="hide-menu">Dashboard</span>
           </a>
         </li>
+        <li class="nav-small-cap">
+          <i class="ti ti-dots nav-small-cap-icon fs-4"></i>
+          <span class="hide-menu">Management</span>
+        </li>
         <li class="sidebar-item">
-          <a class="sidebar-link" href="javascript:void(0)" aria-expanded="false" id="user-management-menu">
+          <a class="sidebar-link" href="javascript:void(0)" aria-expanded="false">
             <span>
-              <i class="ti ti-user"></i>
+              <i class="ti ti-users"></i>
             </span>
             <span class="hide-menu">User Management</span>
             <span class="chevron">
               <i class="ti ti-chevron-down"></i>
             </span>
           </a>
-          <ul class="sidebar-submenu" id="user-management-submenu" style="display: none;">
+          <ul class="sidebar-submenu" style="display: none;">
             <li class="sidebar-subitem">
               <a class="sidebar-sublink" href="{{ route('admin.users.index') }}">
-                <i class="ti ti-user"></i>
+                <i class="ti ti-users"></i>
                 <span>Users</span>
               </a>
             </li>
             <li class="sidebar-subitem">
-              <a class="sidebar-sublink" href="">
+              <a class="sidebar-sublink" href="#submenu2">
                 <i class="ti ti-key"></i>
-                <span>Roles</span>
+                <span>Role</span>
               </a>
             </li>
             <li class="sidebar-subitem">
-              <a class="sidebar-sublink" href="">
+              <a class="sidebar-sublink" href="#submenu2">
                 <i class="ti ti-lock"></i>
                 <span>Permissions</span>
               </a>

@@ -12,7 +12,7 @@ class UserController extends Controller
     {
         
         if ($request->ajax()) {
-            $event = User::select('id',  'name', 'email', 'last_login_at');
+            $event = User::select('id',  'name', 'email', 'last_login_at', 'status')->where('id', '<>', auth()->user()->id);
             return DataTables::of($event)
                 ->addColumn('status', function($row){
                     return $row->status ? '<button class="btn btn-success btn-sm">Active</button>' : '<button class="btn btn-danger btn-sm">Inactive</button>';

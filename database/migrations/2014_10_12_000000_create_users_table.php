@@ -20,6 +20,12 @@ return new class extends Migration
             $table->rememberToken();
             $table->timestamp('last_login_at')->nullable();
             $table->ipAddress('last_login_ip')->nullable();
+            $table->string('device_token')->nullable();
+            $table->unsignedTinyInteger('status')->default(1)->comment('0=Inactive, 1=Active');
+            $table->unsignedInteger('created_by')->nullable();
+            $table->foreign('created_by')->references('id')->on('users')->onDelete('cascade');
+            $table->unsignedInteger('updated_by')->nullable();
+            $table->foreign('updated_by')->references('id')->on('users')->onDelete('cascade');
             $table->timestamps();
             $table->softDeletes();
         });
