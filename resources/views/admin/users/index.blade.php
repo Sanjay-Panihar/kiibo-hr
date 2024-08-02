@@ -15,8 +15,8 @@
                         <h3>Users</h3>
                     </div>
                     <div class="col-md-6 text-end">
-                        <button type="button" class="btn btn-primary" onclick="openAddModal()"><i
-                                class="ti ti-plus"></i> Add User</button>
+                        <a href="{{ route('admin.users.create') }}" class="btn btn-primary"><i
+                                class="ti ti-plus"></i> Add User</a>
                     </div>
                 </div>
             </div>
@@ -29,6 +29,7 @@
                                 <th>Name</th>
                                 <th>Email</th>
                                 <th>Last Login</th>
+                                <th>Role</th>
                                 <th>Status</th>
                                 <th>Action</th>
                             </tr>
@@ -57,6 +58,7 @@
                     {data: 'name', name: 'name'},
                     {data: 'email', name: 'email'},
                     {data: 'last_login_at', name: 'last_login_at', defaultContent: 'N/A'},
+                    {data: 'roles', name: 'roles'},
                     {data: 'status', name: 'status'},
                     { data: 'actions', orderable: false, searchable: false }
 
