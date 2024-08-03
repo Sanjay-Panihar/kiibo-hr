@@ -108,6 +108,7 @@
                     if (response.status) {
                         toastr.success(response.message);
                         $('#registerForm')[0].reset();
+                        $('#users-table').DataTable().ajax.reload();
                     }
                 },
                 error: function(xhr) {

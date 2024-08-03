@@ -19,8 +19,9 @@ class UserController extends Controller
         if ($request->ajax()) {
             $users = User::with('roles')->select('id', 'name', 'email', 'last_login_at', 'status')->where('id', '<>', auth()->user()->id);
             return DataTables::of($users)
+                ->addIndexColumn()
                 ->addColumn('status', function ($row) {
-                    return $row->status ? '<button class="btn btn-success btn-sm">Active</button>' : '<button class="btn btn-danger btn-sm">Inactive</button>';
+                    return $row->status ? '<span class="badge bg-success-subtle text-success btn-sm">Active</span>' : '<span class="badge bg-danger-subtle text-danger btn-sm">Inactive</span>';
                 })
                 ->addColumn('roles', function ($row) {
                     return $row->roles ? $row->roles->pluck('name')->implode(', ') : 'N/A'; // Access the role's name
@@ -77,6 +78,7 @@ class UserController extends Controller
                 'email' => 'required|string|email|max:255|unique:users,email,' . $request->id,
                 'password' => $request->id ? 'nullable|string|min:8|confirmed' : 'required|string|min:8|confirmed',
                 'role_id' => 'required|exists:roles,id',
+                'status' => 'required|in:0,1',
             ]);
             if ($validator->fails()) {
                 return response()->json(['success' => false, 'errors' => $validator->errors()], 422);
@@ -96,11 +98,10 @@ class UserController extends Controller
                 if($request->role_id) {
                     $role = Role::find($request->role_id);
                     $user->syncRoles($role->name);
+                } else {
+                    $user->syncRoles('user');
                 }
-                return response()->json([
-                    'status' => true,
-                    'message' => 'User ' . ($request->id ? 'updated' : 'created') . ' successfully'
-                ], 200);
+                return response()->json([ 'status' => true, 'message' => 'User ' . ($request->id ? 'updated' : 'created') . ' successfully'], 200);
             }
         } catch (Exception $e) {
             Log::error($e->getMessage());

@@ -47,7 +47,7 @@
               </a>
             </li>
             <li class="sidebar-subitem">
-              <a class="sidebar-sublink" href="#submenu2">
+              <a class="sidebar-sublink" href="{{ route('admin.roles.index') }}">
                 <i class="ti ti-key"></i>
                 <span>Role</span>
               </a>
