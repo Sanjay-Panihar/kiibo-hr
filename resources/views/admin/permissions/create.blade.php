@@ -1,6 +1,6 @@
 @extends('layouts.app')
 
-@section('title', 'Register User')
+@section('title', 'Add Permission')
 
 @section('content')
 <div class="page-wrapper" id="main-wrapper" data-layout="vertical" data-navbarbg="skin6" data-sidebartype="full" data-sidebar-position="fixed" data-header-position="fixed">
@@ -10,71 +10,42 @@
         <div class="container-fluid">
             <div class="row">
                 <div class="col-md-6">
-                    <h3>Register User</h3>
+                    <h3>Add Permission</h3>
                 </div>
                 <div class="col-md-6 text-end">
-                    <a href="{{ route('admin.users.index') }}" class="btn btn-primary">
+                    <a href="{{ route('admin.permissions.index') }}" class="btn btn-primary">
                         <i class="ti ti-arrow-left"></i> Back
                     </a>
                 </div>
             </div>
             <div class="content-box">
                 <div class="card">
-                    <form id="registerForm" action="{{ route('admin.users.store') }}" method="POST">
+                    <form id="permissionForm" action="{{ route('admin.permissions.store') }}" method="POST">
                         @csrf
                         <div class="card-body">
-                            <h4 class="card-title">User Information</h4>
                             <div class="row pt-3">
                                 <div class="col-md-6">
                                     <div class="mb-3">
                                         <label class="form-label">Name<span class="text-danger">*</span></label>
-                                        <input type="text" name="name" id="name" class="form-control" placeholder="John">
+                                        <input type="text" name="name" id="name" class="form-control" placeholder="Permission name">
                                         <span class="text-danger" id="name_error"></span>
                                     </div>
                                 </div>
                                 
                                 <div class="col-md-6">
                                     <div class="mb-3">
-                                        <label class="form-label">Email<span class="text-danger">*</span></label>
-                                        <input type="email" name="email" id="email" class="form-control" placeholder="email@example.com">
-                                        <span class="text-danger" id="email_error"></span>
+                                        <label class="form-label">Group</label>
+                                        <input type="text" name="group" id="group" class="form-control" placeholder="Group">
+                                        <span class="text-danger" id="group_error"></span>
                                     </div>
                                 </div>
                             </div>
                             <div class="row">
-                                <div class="col-md-6">
-                                    <div class="mb-3">
-                                        <label class="form-label">Password<span class="text-danger">*</span></label>
-                                        <input type="password" name="password" id="password" class="form-control" placeholder="********">
-                                        <span class="text-danger" id="password_error"></span>
-                                    </div>
-                                </div>
-                                <div class="col-md-6">
-                                    <div class="mb-3">
-                                        <label class="form-label">Confirm Password<span class="text-danger">*</span></label>
-                                        <input type="password" name="password_confirmation" id="password_confirmation" class="form-control" placeholder="********">
-                                        <span class="text-danger" id="password_confirmation_error"></span>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="row">
-                                <div class="col-md-6">
-                                    <div class="mb-3">
-                                        <label class="form-label">Role<span class="text-danger">*</span></label>
-                                        <select name="role_id" class="form-select">
-                                            <option value="">Select Role</option>
-                                            @foreach ($roles as $role )
-                                            <option value="{{ $role->id }}">{{ $role->name }}</option>
-                                            @endforeach
-                                        </select>
-                                        <span class="text-danger" id="role_id_error"></span>
-                                    </div>
-                                </div>
                                 <div class="col-md-6">
                                     <div class="mb-3">
                                         <label class="form-label">Status<span class="text-danger">*</span></label>
                                         <select name="status" class="form-select">
-                                            <option value="">Select Status</option>
+                                            <option value="" selected disabled>Select Status</option>
                                             <option value="1">Active</option>
                                             <option value="0">Inactive</option>
                                         </select>
@@ -106,10 +77,10 @@
 <script>
     $(document).ready(function() {
         $('#cancelBtn').click(function() {
-            window.location.href = "{{ route('admin.users.index') }}";
+            window.location.href = "{{ route('admin.permissions.index') }}";
         });
 
-        $('#registerForm').submit(function(e) {
+        $('#permissionForm').submit(function(e) {
             e.preventDefault();
             $.ajax({
                 url: $(this).attr('action'),
@@ -118,8 +89,8 @@
                 success: function(response) {
                     if (response.status) {
                         toastr.success(response.message);
-                        $('#registerForm')[0].reset();
-                        $('#users-table').DataTable().ajax.reload();
+                        $('#permissionForm')[0].reset();
+                        $('#permissions-table').DataTable().ajax.reload();
                     }
                 },
                 error: function(xhr) {
