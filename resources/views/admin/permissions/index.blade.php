@@ -1,6 +1,6 @@
 @extends('layouts.app')
 
-@section('title', 'Users')
+@section('title', 'Permissions')
 
 @section('content')
 <div class="page-wrapper" id="main-wrapper" data-layout="vertical" data-navbarbg="skin6" data-sidebartype="full"
@@ -12,24 +12,21 @@
             <div>
                 <div class="row">
                     <div class="col-md-6">
-                        <h3>Users</h3>
+                        <h3>Permissions</h3>
                     </div>
                     <div class="col-md-6 text-end">
-                        <a href="{{ route('admin.users.create') }}" class="btn btn-primary"><i
-                                class="ti ti-plus"></i> Add User</a>
+                        <a href="{{ route('admin.permissions.create') }}" class="btn btn-primary"><i
+                                class="ti ti-plus"></i> Add Permission</a>
                     </div>
                 </div>
             </div>
             <div class="tab-container">
                 <div class="content-box">
-                    <table id="users-table" class="table table-striped">
+                    <table id="permissions-table" class="table table-striped">
                         <thead>
                             <tr>
                                 <th>ID</th>
                                 <th>Name</th>
-                                <th>Email</th>
-                                <th>Last Login</th>
-                                <th>Role</th>
                                 <th>Status</th>
                                 <th>Action</th>
                             </tr>
@@ -49,16 +46,13 @@
 @push('scripts')
     <script>
        $(document).ready(function () {
-            const usersTable = $('#users-table').DataTable({
+            const usersTable = $('#permissions-table').DataTable({
                 processing: true,
                 serverSide: true,
-                ajax: "{{ route('admin.users.index') }}",
+                ajax: "{{ route('admin.permissions.index') }}",
                 columns: [
                     { data: 'DT_RowIndex', name: 'DT_RowIndex', orderable: false, searchable: false },  // Serial number column
                     {data: 'name', name: 'name'},
-                    {data: 'email', name: 'email'},
-                    {data: 'last_login_at', name: 'last_login_at', defaultContent: 'N/A'},
-                    {data: 'roles', name: 'roles'},
                     {data: 'status', name: 'status'},
                     { data: 'actions', orderable: false, searchable: false }
 

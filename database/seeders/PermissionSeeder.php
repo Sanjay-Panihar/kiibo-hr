@@ -7,6 +7,8 @@ use Illuminate\Database\Seeder;
 use Spatie\Permission\Models\Permission;
 use Spatie\Permission\Models\Role;
 use Spatie\Permission\PermissionRegistrar;
+use Illuminate\Support\Facades\Hash;
+
 
 class PermissionSeeder extends Seeder
 {
@@ -44,20 +46,28 @@ class PermissionSeeder extends Seeder
             Permission::create(['name' => $permission]);
         }
 
-        $role = Role::create(['name' => 'super admin']);
+        $role = Role::create(['name' => 'Super Admin']);
         $role->givePermissionTo($permissions);
 
-        $role = Role::create(['name' => 'user']);
+
+        $role2 = Role::create(['name' => 'User']);
         $role->givePermissionTo(['read users']);
 
-        $role = Role::create(['name' => 'employee']);
+        $role3 = Role::create(['name' => 'Employee']);
         $role->givePermissionTo(['read attendences', 'read leaves']);
 
-        $role = Role::create(['name' => 'hr']);
+        $role4 = Role::create(['name' => 'HR']);
         $role->givePermissionTo(['read attendences', 'read leaves']);
 
-        $role = Role::create(['name' => 'admin']);
+        $role5 = Role::create(['name' => 'Admin']);
         $role->givePermissionTo($permissions);
+
+        $user = \App\Models\User::factory()->create([
+            'name' => 'Super-Admin',
+            'email' => 'superadmin@example.com',
+            'password' => Hash::make('password'),
+        ]);
+        $user->assignRole($role);
 
     }
 }
