@@ -8,6 +8,7 @@ use Yajra\DataTables\Facades\DataTables;
 use Auth;
 use App\Helpers\Helper;
 use Illuminate\Support\Facades\Validator;
+use App\Models\Designation;
 
 class EmployeeReportController extends Controller
 {
@@ -38,7 +39,9 @@ class EmployeeReportController extends Controller
     }
     public function create()
     {
-        return view('admin.employee-report.create');
+        $designations = Designation::select('id', 'name')->get();
+
+        return view('admin.employee-report.create', compact('designations'));
     }
 
     public function store(Request $request)
@@ -49,8 +52,9 @@ class EmployeeReportController extends Controller
     public function edit($id)
     {
         $employeeReport = EmployeeReport::find($id);
+        $designations = Designation::select('id', 'name')->get();
 
-        return view('admin.employee-report.edit', compact('employeeReport'));
+        return view('admin.employee-report.edit', compact('employeeReport', 'designations'));
     }
 
     public function update(Request $request, $id)

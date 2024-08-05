@@ -168,8 +168,12 @@
                             </div>
                             <div class="mb-3">
                                 <label for="designation" class="form-label">Designation</label>
-                                <input type="text" class="form-control @error('designation') is-invalid @enderror"
-                                    id="designation" name="designation" value="{{ old('designation') }}" required>
+                                    <select name="designation" id="designation" class="form-select @error('designation') is-invalid @enderror">
+                                        <option selected disabled>Select Designation</option>
+                                        @foreach ($designations as $designation)
+                                            <option value="{{ $designation->id }}">{{ $designation->name }}</option>
+                                        @endforeach
+                                    </select>
                                 @error('designation')
                                     <div class="invalid-feedback">{{ $message }}</div>
                                 @enderror
