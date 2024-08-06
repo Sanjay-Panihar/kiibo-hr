@@ -19,55 +19,76 @@ class PermissionSeeder extends Seeder
     {
         app()[PermissionRegistrar::class]->forgetCachedPermissions();
 
-        $permissions = [
-            'create roles',
-            'read roles',
-            'update roles',
-            'delete roles',
-            'create permissions',
-            'read permissions',
-            'update permissions',
-            'delete permissions',
-            'create users',
-            'read users',
-            'update users',
-            'delete users',
-            'create attendences',
-            'read attendences',
-            'update attendences',
-            'delete attendences',
-            'create leaves',
-            'read leaves',
-            'update leaves',
-            'delete leaves',
-        ];
+        #admin
+        Permission::firstOrCreate(['group' => 'admin', 'name' => 'View All Admin', 'status' => 1, 'guard_name' => 'web']);
+        Permission::firstOrCreate(['group' => 'admin', 'name' => 'Create Admin', 'status' => 1, 'guard_name' => 'web']);
+        Permission::firstOrCreate(['group' => 'admin', 'name' => 'View Admin Details', 'status' => 1, 'guard_name' => 'web']);
+        Permission::firstOrCreate(['group' => 'admin', 'name' => 'Edit Admin', 'status' => 1, 'guard_name' => 'web']);
+        Permission::firstOrCreate(['group' => 'admin', 'name' => 'Delete Admin', 'status' => 1, 'guard_name' => 'web']);
 
-        foreach ($permissions as $permission) {
-            Permission::create(['name' => $permission]);
-        }
+        #User
+        Permission::firstOrCreate(['group' => 'user', 'name' => 'View All Users', 'status' => 1, 'guard_name' => 'web']);
+        Permission::firstOrCreate(['group' => 'user', 'name' => 'Create User', 'status' => 1, 'guard_name' => 'web']);
+        Permission::firstOrCreate(['group' => 'user', 'name' => 'View User Details', 'status' => 1, 'guard_name' => 'web']);
+        Permission::firstOrCreate(['group' => 'user', 'name' => 'Edit User', 'status' => 1, 'guard_name' => 'web']);
+        Permission::firstOrCreate(['group' => 'user', 'name' => 'Delete User', 'status' => 1, 'guard_name' => 'web']);
 
-        $role = Role::create(['name' => 'Super Admin']);
-        $role->givePermissionTo($permissions);
+        #Role
+        Permission::firstOrCreate(['group' => 'role', 'name' => 'View All Roles', 'status' => 1, 'guard_name' => 'web']);
+        Permission::firstOrCreate(['group' => 'role', 'name' => 'Create Role', 'status' => 1, 'guard_name' => 'web']);
+        Permission::firstOrCreate(['group' => 'role', 'name' => 'View Role Details', 'status' => 1, 'guard_name' => 'web']);
+        Permission::firstOrCreate(['group' => 'role', 'name' => 'Edit Role', 'status' => 1, 'guard_name' => 'web']);
 
+        #Permission
+        Permission::firstOrCreate(['group' => 'permission', 'name' => 'View All Permissions', 'status' => 1, 'guard_name' => 'web']);
+        Permission::firstOrCreate(['group' => 'permission', 'name' => 'Create Permissions', 'status' => 1, 'guard_name' => 'web']);
+        Permission::firstOrCreate(['group' => 'permission', 'name' => 'View Permissions Details', 'status' => 1, 'guard_name' => 'web']);
+        Permission::firstOrCreate(['group' => 'permission', 'name' => 'Edit Permissions', 'status' => 1, 'guard_name' => 'web']);
+        Permission::firstOrCreate(['group' => 'permission', 'name' => 'Delete Permissions', 'status' => 1, 'guard_name' => 'web']);
 
-        $role2 = Role::create(['name' => 'User']);
-        $role->givePermissionTo(['read users']);
+        #Event
+        Permission::firstOrCreate(['group' => 'event', 'name' => 'View All Events', 'status' => 1, 'guard_name' => 'web']);
+        Permission::firstOrCreate(['group' => 'event', 'name' => 'Create Event', 'status' => 1, 'guard_name' => 'web']);
+        Permission::firstOrCreate(['group' => 'event', 'name' => 'View Event Details', 'status' => 1, 'guard_name' => 'web']);
+        Permission::firstOrCreate(['group' => 'event', 'name' => 'Edit Event', 'status' => 1, 'guard_name' => 'web']);
+        Permission::firstOrCreate(['group' => 'event', 'name' => 'Delete Event', 'status' => 1, 'guard_name' => 'web']);
 
-        $role3 = Role::create(['name' => 'Employee']);
-        $role->givePermissionTo(['read attendences', 'read leaves']);
+        #Attendence
+        Permission::firstOrCreate(['group' => 'attendence', 'name' => 'View All Attendences', 'status' => 1, 'guard_name' => 'web']);
+        Permission::firstOrCreate(['group' => 'attendence', 'name' => 'Create Attendence', 'status' => 1, 'guard_name' => 'web']);
+        Permission::firstOrCreate(['group' => 'attendence', 'name' => 'View Attendence Details', 'status' => 1, 'guard_name' => 'web']);
+        Permission::firstOrCreate(['group' => 'attendence', 'name' => 'Edit Attendence', 'status' => 1, 'guard_name' => 'web']);
 
-        $role4 = Role::create(['name' => 'HR']);
-        $role->givePermissionTo(['read attendences', 'read leaves']);
+        #Leave
+        Permission::firstOrCreate(['group' => 'leave', 'name' => 'View All Leaves', 'status' => 1, 'guard_name' => 'web']);
+        Permission::firstOrCreate(['group' => 'leave', 'name' => 'Create Leave', 'status' => 1, 'guard_name' => 'web']);
+        Permission::firstOrCreate(['group' => 'leave', 'name' => 'View Leave Details', 'status' => 1, 'guard_name' => 'web']);
+        Permission::firstOrCreate(['group' => 'leave', 'name' => 'Edit Leave', 'status' => 1, 'guard_name' => 'web']);
+        Permission::firstOrCreate(['group' => 'leave', 'name' => 'Delete Leave', 'status' => 1, 'guard_name' => 'web']);
 
-        $role5 = Role::create(['name' => 'Admin']);
-        $role->givePermissionTo($permissions);
+        #Timesheet
+        Permission::firstOrCreate(['group' => 'timesheet', 'name' => 'View All Timesheets', 'status' => 1, 'guard_name' => 'web']);
+        Permission::firstOrCreate(['group' => 'timesheet', 'name' => 'Create Timesheet', 'status' => 1, 'guard_name' => 'web']);
+        Permission::firstOrCreate(['group' => 'timesheet', 'name' => 'View Timesheet Details', 'status' => 1, 'guard_name' => 'web']);
+        Permission::firstOrCreate(['group' => 'timesheet', 'name' => 'Edit Timesheet', 'status' => 1, 'guard_name' => 'web']);
+        Permission::firstOrCreate(['group' => 'timesheet', 'name' => 'Delete Timesheet', 'status' => 1, 'guard_name' => 'web']);
 
-        $user = \App\Models\User::factory()->create([
-            'name' => 'Super-Admin',
-            'email' => 'superadmin@example.com',
-            'password' => Hash::make('password'),
-        ]);
-        $user->assignRole($role);
+        #Employee Report
+        Permission::firstOrCreate(['group' => 'employee report', 'name' => 'View All Employee Reports', 'status' => 1, 'guard_name' => 'web']);
+        Permission::firstOrCreate(['group' => 'employee report', 'name' => 'Create Employee Report', 'status' => 1, 'guard_name' => 'web']);
+        Permission::firstOrCreate(['group' => 'employee report', 'name' => 'View Employee Report Details', 'status' => 1, 'guard_name' => 'web']);
+        Permission::firstOrCreate(['group' => 'employee report', 'name' => 'Edit Employee Report', 'status' => 1, 'guard_name' => 'web']);
+
+        #Policy
+        Permission::firstOrCreate(['group' => 'policy', 'name' => 'View All Policies', 'status' => 1, 'guard_name' => 'web']);
+        Permission::firstOrCreate(['group' => 'policy', 'name' => 'Create Policy', 'status' => 1, 'guard_name' => 'web']);
+        Permission::firstOrCreate(['group' => 'policy', 'name' => 'View Policy Details', 'status' => 1, 'guard_name' => 'web']);
+        Permission::firstOrCreate(['group' => 'policy', 'name' => 'Edit Policy', 'status' => 1, 'guard_name' => 'web']);
+
+        #Settings
+        Permission::firstOrCreate(['group' => 'settings', 'name' => 'Change Password', 'status' => 1, 'guard_name' => 'web']);
+        Permission::firstOrCreate(['group' => 'settings', 'name' => 'Delete Account', 'status' => 1, 'guard_name' => 'web']);
 
     }
 }
+
