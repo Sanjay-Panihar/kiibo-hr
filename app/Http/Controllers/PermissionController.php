@@ -11,7 +11,7 @@ class PermissionController extends Controller
     public function index(Request $request)
     {
         if ($request->ajax()) {
-            $data = Permission::latest()->get();
+            $data = Permission::select('id', 'name', 'status')->latest()->get();
             return Datatables::of($data)
             ->addIndexColumn()
             ->addColumn('actions', function ($row) {
@@ -43,9 +43,11 @@ class PermissionController extends Controller
     {
         $request->validate([
             'name' => 'required|unique:permissions',
+            'status' => 'required|in:1,0',
         ]);
+        $request['created_by'] = auth()->user()->id;
         $permission = Permission::create($request->all());
-        return response()->json([ 'status' => true, 'message', 'Permission created successfully.']);
+        return response()->json([ 'status' => true, 'message'=> 'Permission created successfully.']);
     }
 
     public function edit($id)
@@ -60,9 +62,9 @@ class PermissionController extends Controller
             'name' => 'required|unique:permissions,name,' . $id,
         ]);
         $permission = Permission::findOrFail($id);
-        $request['guard_name'] = 'web';
+        $request['updated_by'] = auth()->user()->id;
         $permission->update($request->all());
-        return redirect()->route('admin.permissions.index')->with('message', 'Permission updated successfully.');
+        return response()->json([ 'status' => true, 'message'=> 'Permission updated successfully.'], 200);
     }
 
     public function destroy($id)

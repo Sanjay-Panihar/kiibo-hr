@@ -15,8 +15,10 @@
                         <h3>Permissions</h3>
                     </div>
                     <div class="col-md-6 text-end">
+                        @can('create permissions')
                         <a href="{{ route('admin.permissions.create') }}" class="btn btn-primary"><i
                                 class="ti ti-plus"></i> Add Permission</a>
+                        @endcan
                     </div>
                 </div>
             </div>

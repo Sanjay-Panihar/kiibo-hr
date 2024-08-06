@@ -2,16 +2,25 @@
 
 namespace App\Http\Controllers;
 
+use Exception;
 use Illuminate\Http\Request;
 use Spatie\Permission\Models\Role;
 use Yajra\DataTables\Facades\DataTables;
+use Spatie\Permission\Models\Permission;
 
 class RoleController extends Controller
 {
+    public function __construct()
+    {
+        $this->middleware('role_or_permission:read roles|create roles|update roles|delete roles', ['only' => ['index','show']]);
+        $this->middleware('role_or_permission:create roles', ['only' => ['create','store']]);
+        $this->middleware('role_or_permission:update roles', ['only' => ['edit','update']]);
+        $this->middleware('role_or_permission:delete roles', ['only' => ['destroy']]);
+    }
     public function index(Request $request)
     {
         if ($request->ajax()) {
-            $data = Role::select('id', 'name')->latest()->get();
+            $data = Role::select('id', 'name', 'status')->latest()->get();
             return Datatables::of($data)
                 ->addIndexColumn()
                 ->addColumn('actions', function ($row) {
@@ -60,17 +69,36 @@ class RoleController extends Controller
     public function edit($id)
     {
         $role = Role::find($id);
-        return view('admin.roles.edit', compact('role'));
+        $permissions = Permission::select('id', 'name')->where('status', 1)->get(); // Retrieve all permissions
+        $rolePermissions = $role->permissions->pluck('id')->toArray();
+
+        return view('admin.roles.edit', compact('role', 'permissions', 'rolePermissions'));
     }
 
     public function update(Request $request, $id)
     {
+       try {
         $request->validate([
             'name' => 'required|unique:roles,name,' . $id,
         ]);
         $role = Role::find($id);
+        if (!$role) {
+            return response()->json(['status' => false, 'message' => 'Role not found.'], 404);
+        }
         $role->update(['name' => $request->name]);
-        return redirect()->route('admin.roles.index')->with('message', 'Role updated successfully!');
+        if ($request->has('permissions') && !empty($request->permissions)) {
+            $permissions = Permission::whereIn('id', $request->permissions)
+                                     ->where('status', 1)
+                                     ->pluck('name');
+            $role->syncPermissions($permissions);
+        } else {
+            $role->syncPermissions([]);
+        }
+        return response()->json(['status' => true, 'message' => 'Role updated successfully.'], 200);
+
+       } catch (Exception $e) {
+           return response()->json(['status' => false, 'message' => $e->getMessage()], 500);
+       }
     }
 
     public function destroy($id)
