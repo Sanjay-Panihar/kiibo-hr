@@ -91,6 +91,7 @@
                         toastr.success(response.message);
                         $('#permissionForm')[0].reset();
                         $('#permissions-table').DataTable().ajax.reload();
+                        clearErrors();
                     }
                 },
                 error: function(xhr) {

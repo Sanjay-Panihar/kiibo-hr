@@ -39,7 +39,7 @@ class EmployeeReportController extends Controller
     }
     public function create()
     {
-        $designations = Designation::select('id', 'name')->get();
+        $designations = Designation::select('id', 'name')->where('status', 1)->get();
 
         return view('admin.employee-report.create', compact('designations'));
     }
@@ -52,7 +52,7 @@ class EmployeeReportController extends Controller
     public function edit($id)
     {
         $employeeReport = EmployeeReport::find($id);
-        $designations = Designation::select('id', 'name')->get();
+        $designations = Designation::select('id', 'name')->where('status', 1)->get();
 
         return view('admin.employee-report.edit', compact('employeeReport', 'designations'));
     }
