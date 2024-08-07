@@ -14,9 +14,11 @@
                     <div class="col-md-6">
                         <h3>Events</h3>
                     </div>
+                    @can('Create Event')
                     <div class="col-md-6 text-end">
                         <button class="btn btn-primary"><i class="ti ti-plus"></i> Add Event</button>
                     </div>
+                    @endcan
                 </div>
             </div>
             <div class="tab-container">
