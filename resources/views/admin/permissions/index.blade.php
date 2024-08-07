@@ -29,6 +29,7 @@
                             <tr>
                                 <th>ID</th>
                                 <th>Name</th>
+                                <th>Group</th>
                                 <th>Status</th>
                                 <th>Action</th>
                             </tr>
@@ -55,6 +56,7 @@
                 columns: [
                     { data: 'DT_RowIndex', name: 'DT_RowIndex', orderable: false, searchable: false },  // Serial number column
                     {data: 'name', name: 'name'},
+                    {data: 'group', name: 'group'},
                     {data: 'status', name: 'status'},
                     { data: 'actions', orderable: false, searchable: false }
 

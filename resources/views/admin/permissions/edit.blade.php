@@ -28,7 +28,7 @@
                                 <div class="col-md-6">
                                     <div class="mb-3">
                                         <label class="form-label">Name<span class="text-danger">*</span></label>
-                                        <input type="text" name="name" id="name" class="form-control" placeholder="Permission name" value="{{ $permission->name }}">
+                                        <input type="text" name="name" id="name" class="form-control" placeholder="Permission name" value="{{ $permission->name }}" readonly>
                                         <span class="text-danger" id="name_error"></span>
                                     </div>
                                 </div>
@@ -36,7 +36,7 @@
                                 <div class="col-md-6">
                                     <div class="mb-3">
                                         <label class="form-label">Group</label>
-                                        <input type="text" name="group" id="group" class="form-control" placeholder="Group" value="{{ $permission->group }}">
+                                        <input type="text" name="group" id="group" class="form-control" placeholder="Group" value="{{ $permission->group }}" readonly>
                                         <span class="text-danger" id="group_error"></span>
                                     </div>
                                 </div>

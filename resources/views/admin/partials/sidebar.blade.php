@@ -40,7 +40,7 @@
             </span>
           </a>
           <ul class="sidebar-submenu" style="display: none;">
-            @can('view_users')
+            @can('View All Users')
             <li class="sidebar-subitem">
               <a class="sidebar-sublink" href="{{ route('admin.users.index') }}">
                 <i class="ti ti-users"></i>
@@ -48,7 +48,7 @@
               </a>
             </li>
             @endcan
-            @can('view_roles')
+            @can('View All Roles')
             <li class="sidebar-subitem">
               <a class="sidebar-sublink" href="{{ route('admin.roles.index') }}">
                 <i class="ti ti-key"></i>
@@ -56,7 +56,7 @@
               </a>
             </li>
             @endcan
-            @can('view_permissions')
+            @can('View All Permissions')
             <li class="sidebar-subitem">
               <a class="sidebar-sublink" href="{{ route('admin.permissions.index') }}">
                 <i class="ti ti-lock"></i>
@@ -70,7 +70,7 @@
           <i class="ti ti-dots nav-small-cap-icon fs-4"></i>
           <span class="hide-menu">COMPONENTS</span>
         </li>
-        @can('view_events')
+        @can('View All Events')
         <li class="sidebar-item">
           <a class="sidebar-link" href="{{ route('admin.event')}}" aria-expanded="false">
             <span>
@@ -215,7 +215,7 @@
         </li>
         @endcan
 
-        @can('employee_report')
+        @can('View Employee Report Details')
         <li class="sidebar-item">
           <a class="sidebar-link" href="{{ route('admin.employee-report.index') }}" aria-expanded="false">
             <span>
